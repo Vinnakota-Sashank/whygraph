@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WhyGraph — Engineering Decision Memory | FalkorDB</title>
-  <meta name="description" content="Proactive engineering decision memory agent stopping teams and AI agents from repeating costly architectural mistakes. Built with FalkorDB Graph Database.">
+  <title>WhyGraph — Engineering Decision Memory & Architectural Guardrail | FalkorDB</title>
+  <meta name="description" content="Enterprise engineering decision memory agent stopping teams and AI agents from repeating costly architectural mistakes. Built with FalkorDB Graph Database.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
@@ -30,14 +30,14 @@
         </div>
         <div class="brand-text">
           <div class="brand-title">Why<span class="gradient-text">Graph</span></div>
-          <div class="brand-subtitle">Company Brain &bull; FalkorDB Graph Hacks</div>
+          <div class="brand-subtitle">Company Brain &bull; FalkorDB Graph Hacks (Track 3)</div>
         </div>
       </div>
 
       <div class="header-stats" id="header-stats">
         <div class="stat-pill" title="Primary Database Engine">
           <span class="pulse-indicator"></span>
-          <span class="stat-label">FalkorDB</span>
+          <span class="stat-label">FalkorDB Cloud</span>
           <span class="stat-value highlight" id="db-graph-name">whygraph</span>
         </div>
         <div class="stat-pill">
@@ -48,11 +48,19 @@
           <span class="stat-label">Edges:</span>
           <span class="stat-value" id="stat-edges-count">--</span>
         </div>
+
+        <button id="btn-open-ingest-modal" class="btn-primary-sm" title="Ingest new ADR, Post-Mortem, or Slack thread into FalkorDB">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 5v14M5 12h14"/>
+          </svg>
+          <span>+ Ingest Living Memory</span>
+        </button>
+
         <button id="btn-reingest" class="btn-ghost" title="Reset and re-ingest sample graph data">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
           </svg>
-          <span>Rebuild Graph</span>
+          <span>Rebuild</span>
         </button>
       </div>
     </div>
@@ -69,12 +77,37 @@
         <span>PR Architectural Radar</span>
         <span class="badge-killer">Killer Feature</span>
       </button>
+
+      <button class="tab-btn" id="tab-canvas" data-tab="section-canvas">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="6" cy="6" r="3"></circle>
+          <circle cx="18" cy="18" r="3"></circle>
+          <path d="M8.59 8.51l6.83 6.98"></path>
+          <circle cx="18" cy="6" r="3"></circle>
+          <circle cx="6" cy="18" r="3"></circle>
+          <path d="M8.59 15.49l6.83-6.98"></path>
+        </svg>
+        <span>Live Graph Canvas</span>
+        <span class="badge-new">Interactive</span>
+      </button>
+
+      <button class="tab-btn" id="tab-guardrail" data-tab="section-guardrail">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+          <line x1="8" y1="21" x2="16" y2="21"></line>
+          <line x1="12" y1="17" x2="12" y2="21"></line>
+        </svg>
+        <span>AI Agent Guardrail</span>
+        <span class="badge-ai">Cursor / MCP</span>
+      </button>
+
       <button class="tab-btn" id="tab-chat" data-tab="section-chat">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
         </svg>
         <span>Decision Q&A Agent</span>
       </button>
+
       <button class="tab-btn" id="tab-experts" data-tab="section-experts">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
@@ -84,13 +117,14 @@
         </svg>
         <span>Dynamic Expertise</span>
       </button>
+
       <button class="tab-btn" id="tab-explorer" data-tab="section-explorer">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="12" cy="12" r="10"></circle>
           <line x1="2" y1="12" x2="22" y2="12"></line>
           <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
         </svg>
-        <span>Knowledge Inventory</span>
+        <span>Knowledge & Audit</span>
       </button>
     </nav>
 
@@ -98,8 +132,8 @@
     <section id="section-pr-guard" class="tab-content active">
       <div class="content-header">
         <div>
-          <h1 class="section-title">Automated PR & Decision Violation Radar</h1>
-          <p class="section-subtitle">Stops developers and AI code agents from repeating past architectural mistakes before code is merged.</p>
+          <h1 class="section-title">Automated PR & Architectural Violation Radar</h1>
+          <p class="section-subtitle">Proactively stops developers and AI coding agents from repeating past architectural mistakes before code is merged.</p>
         </div>
         <div class="preset-group">
           <span class="preset-label">Demo Presets:</span>
@@ -122,7 +156,7 @@
               </svg>
               Simulate Pull Request / Commit
             </h2>
-            <span class="pill-tag">Graph Traversal Trigger</span>
+            <span class="pill-tag">FalkorDB Traversal</span>
           </div>
 
           <form id="form-violation" class="form-container">
@@ -185,7 +219,182 @@ services/checkout/requirements.txt</textarea>
       </div>
     </section>
 
-    <!-- SECTION 2: Chat Agent -->
+    <!-- SECTION 2: Interactive Graph Visualizer -->
+    <section id="section-canvas" class="tab-content">
+      <div class="content-header">
+        <div>
+          <h1 class="section-title">Interactive Living Graph Visualizer</h1>
+          <p class="section-subtitle">Real-time force-directed topology of Services, Active Constraints, ADRs, Incidents, and Engineers in FalkorDB Cloud.</p>
+        </div>
+        <div class="canvas-controls">
+          <button id="btn-canvas-reset" class="btn-ghost-sm" title="Center graph">Center</button>
+          <button id="btn-canvas-highlight-violation" class="btn-primary-sm" title="Highlight the active violation path">Highlight Violation Path</button>
+        </div>
+      </div>
+
+      <div class="canvas-wrapper glass-card">
+        <div class="canvas-filter-bar">
+          <span class="filter-label">Filter Entities:</span>
+          <button class="canvas-chip active" data-filter="all">All (<span id="chip-count-all">0</span>)</button>
+          <button class="canvas-chip" data-filter="Service">Services (<span id="chip-count-svc">0</span>)</button>
+          <button class="canvas-chip" data-filter="Constraint">Constraints (<span id="chip-count-c">0</span>)</button>
+          <button class="canvas-chip" data-filter="ADR">ADRs (<span id="chip-count-adr">0</span>)</button>
+          <button class="canvas-chip" data-filter="Incident">Incidents & PostMortems (<span id="chip-count-inc">0</span>)</button>
+          <button class="canvas-chip" data-filter="Person">Engineers (<span id="chip-count-person">0</span>)</button>
+        </div>
+
+        <div class="canvas-container" id="canvas-container">
+          <canvas id="graph-canvas"></canvas>
+
+          <!-- Inspector Flyout Panel -->
+          <div class="canvas-inspector glass-card" id="canvas-inspector">
+            <div class="inspector-header">
+              <div class="inspector-badge" id="inspector-badge">Entity</div>
+              <button class="btn-close-sm" id="btn-close-inspector">&times;</button>
+            </div>
+            <h3 class="inspector-title" id="inspector-title">Select a node</h3>
+            <p class="inspector-desc" id="inspector-desc">Click any node on the graph canvas to inspect its metadata, active constraints, and connected relationships.</p>
+            <div class="inspector-meta" id="inspector-meta"></div>
+          </div>
+
+          <div class="canvas-legend">
+            <div class="legend-item"><span class="legend-dot" style="background: #06b6d4;"></span>Service</div>
+            <div class="legend-item"><span class="legend-dot" style="background: #f59e0b;"></span>Constraint</div>
+            <div class="legend-item"><span class="legend-dot" style="background: #8b5cf6;"></span>ADR</div>
+            <div class="legend-item"><span class="legend-dot" style="background: #ef4444;"></span>Incident</div>
+            <div class="legend-item"><span class="legend-dot" style="background: #10b981;"></span>Engineer</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: AI Coding Agent Guardrail (Cursor / Copilot) -->
+    <section id="section-guardrail" class="tab-content">
+      <div class="content-header">
+        <div>
+          <h1 class="section-title">AI Coding Agent Guardrail (Cursor & Copilot Simulator)</h1>
+          <p class="section-subtitle">How WhyGraph's Model Context Protocol (MCP) server prevents AI code generators from hallucinating breaking architectures.</p>
+        </div>
+        <div class="guardrail-presets">
+          <span class="preset-label">Scenario Presets:</span>
+          <button class="preset-chip active" id="preset-ai-cache">Cache Implementation for Checkout</button>
+          <button class="preset-chip" id="preset-ai-payment">Payment Integration</button>
+        </div>
+      </div>
+
+      <div class="guardrail-prompt-bar glass-card">
+        <label for="ai-prompt-input" class="prompt-bar-label">
+          <span class="ai-sparkle">✨</span> Prompt sent to AI Agent (Cursor / Copilot / Claude):
+        </label>
+        <div class="prompt-input-row">
+          <input type="text" id="ai-prompt-input" class="input-field" value="Write a caching utility for checkout-service to store cart items.">
+          <button id="btn-simulate-ai" class="btn-primary">
+            <span>Simulate AI Generation</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="guardrail-split-grid">
+        <!-- Unguarded AI Card -->
+        <div class="card glass-card ai-card danger-card">
+          <div class="card-header">
+            <div class="ai-header-left">
+              <span class="status-indicator-red"></span>
+              <h2 class="card-title">Unguarded AI Agent (Cursor / Copilot)</h2>
+            </div>
+            <span class="badge-danger">Architectural Amnesia</span>
+          </div>
+          <div class="ai-card-body">
+            <div class="code-wrapper">
+              <div class="code-header">
+                <span class="code-tab">services/checkout/cart_cache.py</span>
+                <span class="code-tag-red">❌ Causes Regression</span>
+              </div>
+              <pre class="code-box code-danger" id="unguarded-code-box"><code># Generated by Cursor / Copilot (UNGUARDED)
+import pymemcache.client.base
+
+class CartCache:
+    def __init__(self):
+        # Directly connects to local Memcached
+        self.client = pymemcache.client.base.Client(('127.0.0.1', 11211))
+
+    def set_cart(self, user_id: str, items: list):
+        self.client.set(user_id, items)
+
+    def get_cart(self, user_id: str):
+        return self.client.get(user_id)</code></pre>
+            </div>
+
+            <div class="threat-box">
+              <div class="threat-title">🚨 Hidden Failures Injected by AI:</div>
+              <ul class="threat-list" id="unguarded-violations-list">
+                <li>Memcached is strictly prohibited across all services (<strong>ADR-001</strong>).</li>
+                <li>No key namespacing convention applied (breaches <code>checkout:cart:{id}</code> standard).</li>
+                <li>No TTL set on cache keys (causes memory leaks).</li>
+                <li>Repeats <strong>Incident INC-089 (SEV-1 outage)</strong> which caused 135 minutes of checkout failure.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Guarded AI Card -->
+        <div class="card glass-card ai-card success-card">
+          <div class="card-header">
+            <div class="ai-header-left">
+              <span class="status-indicator-green"></span>
+              <h2 class="card-title">Guarded by WhyGraph MCP (FalkorDB)</h2>
+            </div>
+            <span class="badge-success">Enterprise Verified</span>
+          </div>
+          <div class="ai-card-body">
+            <div class="code-wrapper">
+              <div class="code-header">
+                <span class="code-tab">services/checkout/cart_cache.py</span>
+                <span class="code-tag-green">✅ ADR-001 Compliant</span>
+              </div>
+              <pre class="code-box code-success" id="guarded-code-box"><code># Generated with WhyGraph MCP Guardrail (FalkorDB)
+import os
+import json
+import redis
+
+# WhyGraph Guard: Enforcing ADR-001 (Shared Redis Cluster & Connection Pooling)
+REDIS_POOL = redis.ConnectionPool(
+    host=os.getenv('REDIS_HOST', 'redis-cluster.internal'),
+    port=6379,
+    max_connections=20,  # ADR-001: Pool max 20 connections
+    decode_responses=True
+)
+
+class CartCache:
+    def __init__(self):
+        self.client = redis.Redis(connection_pool=REDIS_POOL)
+
+    def set_cart(self, user_id: str, items: list):
+        # ADR-001: Mandated namespace 'checkout:cart:{id}' & explicit 3600s TTL
+        key = f'checkout:cart:{user_id}'
+        self.client.setex(key, 3600, json.dumps(items))
+
+    def get_cart(self, user_id: str):
+        key = f'checkout:cart:{user_id}'
+        data = self.client.get(key)
+        return json.loads(data) if data else None</code></pre>
+            </div>
+
+            <div class="protection-box">
+              <div class="protection-title">🛡️ Active Guardrails Injected via FalkorDB MCP:</div>
+              <ul class="protection-list" id="guarded-rules-list">
+                <li>ADR-001: MUST use shared Redis cluster with connection pool (5-20 connections).</li>
+                <li>ADR-001: Cache key format <code>{service}:{entity}:{id}</code>.</li>
+                <li>ADR-001: Mandatory explicit TTL expiration on all keys.</li>
+                <li>Verified in sub-millisecond OpenCypher traversal against live FalkorDB Cloud.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: Chat Agent -->
     <section id="section-chat" class="tab-content">
       <div class="content-header">
         <div>
@@ -205,8 +414,8 @@ services/checkout/requirements.txt</textarea>
           <button class="suggestion-chip" data-query="Who knows about checkout-service?">
             👤 Top checkout-service experts
           </button>
-          <button class="suggestion-chip" data-query="What constraints apply to checkout-service?">
-            📋 Constraints on checkout-service
+          <button class="suggestion-chip" data-query="What is the overall architecture and how do services communicate?">
+            📋 Company Architecture Overview
           </button>
         </div>
 
@@ -241,7 +450,7 @@ services/checkout/requirements.txt</textarea>
       </div>
     </section>
 
-    <!-- SECTION 3: Dynamic Expertise -->
+    <!-- SECTION 5: Dynamic Expertise -->
     <section id="section-experts" class="tab-content">
       <div class="content-header">
         <div>
@@ -256,6 +465,7 @@ services/checkout/requirements.txt</textarea>
             <option value="order-service">order-service</option>
             <option value="inventory-service">inventory-service</option>
             <option value="user-service">user-service</option>
+            <option value="analytics-service">analytics-service</option>
           </select>
         </div>
       </div>
@@ -265,12 +475,12 @@ services/checkout/requirements.txt</textarea>
       </div>
     </section>
 
-    <!-- SECTION 4: Knowledge Inventory (Graph Overview) -->
+    <!-- SECTION 6: Knowledge Inventory & Enterprise Compliance Audit -->
     <section id="section-explorer" class="tab-content">
       <div class="content-header">
         <div>
-          <h1 class="section-title">Knowledge Graph Inventory & Lineage</h1>
-          <p class="section-subtitle">Real-time view of entities, active constraints, and historical incident post-mortems in FalkorDB.</p>
+          <h1 class="section-title">Knowledge Graph Inventory & Executive Audit</h1>
+          <p class="section-subtitle">Real-time view of entities, active constraints, historical incident post-mortems, and bus-factor risk in FalkorDB.</p>
         </div>
       </div>
 
@@ -278,6 +488,7 @@ services/checkout/requirements.txt</textarea>
         <button class="subtab-btn active" data-subtab="subtab-constraints">Active Constraints</button>
         <button class="subtab-btn" data-subtab="subtab-incidents">Incidents & Post-Mortems</button>
         <button class="subtab-btn" data-subtab="subtab-services">Services & Ownership</button>
+        <button class="subtab-btn" data-subtab="subtab-compliance">Executive Architectural Audit</button>
       </div>
 
       <div id="subtab-constraints" class="subtab-content active">
@@ -297,14 +508,81 @@ services/checkout/requirements.txt</textarea>
           <!-- Dynamically populated -->
         </div>
       </div>
+
+      <div id="subtab-compliance" class="subtab-content">
+        <div class="compliance-wrapper glass-card">
+          <div class="compliance-header-bar">
+            <div>
+              <div class="compliance-health-badge" id="compliance-health-badge">Health Score: 83.3%</div>
+              <div class="compliance-subtitle">Single Point of Failure (Bus-Factor) & Constraint Coverage Audit</div>
+            </div>
+            <button id="btn-export-audit" class="btn-primary-sm">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              <span>Download JSON Audit</span>
+            </button>
+          </div>
+          <div id="compliance-table-container" class="table-container">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+      </div>
     </section>
   </main>
+
+  <!-- Living Knowledge Ingestion Modal -->
+  <div class="modal-backdrop" id="modal-ingest">
+    <div class="modal-card glass-card">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="modal-icon">⚡</span>
+          <div>
+            <h2 class="modal-title">Ingest Living Engineering Knowledge</h2>
+            <p class="modal-subtitle">Paste raw unstructured incident notes, Slack threads, or ADRs. WhyGraph extracts entities and links them directly into FalkorDB Cloud.</p>
+          </div>
+        </div>
+        <button class="modal-close" id="btn-close-ingest-modal">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="modal-preset-row">
+          <span class="preset-label">Sample Templates:</span>
+          <button class="modal-preset-chip" id="preset-ingest-kafka">Kafka Lag Incident (Analytics)</button>
+          <button class="modal-preset-chip" id="preset-ingest-queue">Async Queue ADR (Order Service)</button>
+        </div>
+
+        <form id="form-unstructured-ingest">
+          <div class="form-group">
+            <label for="input-unstructured-text">Raw Engineering Document / Post-Mortem / Slack Text <span class="required">*</span></label>
+            <textarea id="input-unstructured-text" class="input-field textarea-md" placeholder="Paste post-mortem lessons learned, ADR markdown, or incident Slack discussion..." required></textarea>
+          </div>
+
+          <div class="modal-actions">
+            <button type="button" class="btn-ghost" id="btn-cancel-ingest">Cancel</button>
+            <button type="submit" id="btn-submit-ingest" class="btn-primary">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="17 8 12 3 7 8"></polyline>
+                <line x1="12" y1="3" x2="12" y2="15"></line>
+              </svg>
+              <span>Extract & Link into FalkorDB</span>
+            </button>
+          </div>
+        </form>
+
+        <div id="ingest-result-container" class="ingest-result-container" style="display: none;"></div>
+      </div>
+    </div>
+  </div>
 
   <footer class="app-footer">
     <div class="footer-content">
       <span>WhyGraph &bull; Built for <strong>FalkorDB Graph Hacks (Track 3: Company Brain)</strong></span>
       <span class="footer-divider">|</span>
-      <span>Powered by <strong>FalkorDB Graph Engine</strong> + FastAPI + Google Gemini</span>
+      <span>Connected to <strong>FalkorDB Cloud (AWS)</strong> + FastAPI + Google Gemini</span>
     </div>
   </footer>
 

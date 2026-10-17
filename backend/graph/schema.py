@@ -9,37 +9,37 @@ def setup_indexes():
 
     index_commands = [
         # Person indexes
-        "CREATE INDEX IF NOT EXISTS FOR (p:Person) ON (p.email)",
-        "CREATE INDEX IF NOT EXISTS FOR (p:Person) ON (p.name)",
-        "CREATE INDEX IF NOT EXISTS FOR (p:Person) ON (p.githubHandle)",
+        "CREATE INDEX FOR (p:Person) ON (p.email)",
+        "CREATE INDEX FOR (p:Person) ON (p.name)",
+        "CREATE INDEX FOR (p:Person) ON (p.githubHandle)",
 
         # Team index
-        "CREATE INDEX IF NOT EXISTS FOR (t:Team) ON (t.name)",
+        "CREATE INDEX FOR (t:Team) ON (t.name)",
 
         # Service index
-        "CREATE INDEX IF NOT EXISTS FOR (s:Service) ON (s.name)",
+        "CREATE INDEX FOR (s:Service) ON (s.name)",
 
         # ADR indexes
-        "CREATE INDEX IF NOT EXISTS FOR (a:ADR) ON (a.id)",
-        "CREATE INDEX IF NOT EXISTS FOR (a:ADR) ON (a.status)",
+        "CREATE INDEX FOR (a:ADR) ON (a.id)",
+        "CREATE INDEX FOR (a:ADR) ON (a.status)",
 
         # PostMortem indexes
-        "CREATE INDEX IF NOT EXISTS FOR (pm:PostMortem) ON (pm.id)",
-        "CREATE INDEX IF NOT EXISTS FOR (pm:PostMortem) ON (pm.incident_id)",
+        "CREATE INDEX FOR (pm:PostMortem) ON (pm.id)",
+        "CREATE INDEX FOR (pm:PostMortem) ON (pm.incident_id)",
 
         # Constraint indexes
-        "CREATE INDEX IF NOT EXISTS FOR (c:Constraint) ON (c.id)",
-        "CREATE INDEX IF NOT EXISTS FOR (c:Constraint) ON (c.isActive)",
-        "CREATE INDEX IF NOT EXISTS FOR (c:Constraint) ON (c.type)",
+        "CREATE INDEX FOR (c:Constraint) ON (c.id)",
+        "CREATE INDEX FOR (c:Constraint) ON (c.isActive)",
+        "CREATE INDEX FOR (c:Constraint) ON (c.type)",
 
         # Incident index
-        "CREATE INDEX IF NOT EXISTS FOR (i:Incident) ON (i.id)",
+        "CREATE INDEX FOR (i:Incident) ON (i.id)",
 
         # Pattern index
-        "CREATE INDEX IF NOT EXISTS FOR (pat:Pattern) ON (pat.id)",
+        "CREATE INDEX FOR (pat:Pattern) ON (pat.id)",
 
         # CodeModule index
-        "CREATE INDEX IF NOT EXISTS FOR (m:CodeModule) ON (m.name)",
+        "CREATE INDEX FOR (m:CodeModule) ON (m.name)",
     ]
 
     for cmd in index_commands:

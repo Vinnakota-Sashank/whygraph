@@ -14,7 +14,7 @@ FIND_CONSTRAINTS_FOR_SERVICE = """
     OPTIONAL MATCH (c)<-[:DEFINES]-(source)
     OPTIONAL MATCH (source)<-[:AUTHORED|WROTE]-(author:Person)
     OPTIONAL MATCH (c)<-[:PRODUCED]-(pm:PostMortem)
-    OPTIONAL MATCH (pm)-[:DOCUMENTS]->(inc:Incident)
+    OPTIONAL MATCH (inc:Incident)-[:DOCUMENTED_IN]->(pm)
     RETURN c.id AS constraint_id,
            c.description AS description,
            c.type AS type,
@@ -86,7 +86,7 @@ FIND_DECISION_LINEAGE = """
     MATCH (c:Constraint)-[:APPLIES_TO]->(svc:Service {name: $serviceName})
     MATCH (c)<-[:DEFINES]-(source)
     OPTIONAL MATCH (source)<-[:AUTHORED|WROTE]-(author:Person)
-    OPTIONAL MATCH (c)<-[:PRODUCED]-(pm:PostMortem)-[:DOCUMENTS]->(inc:Incident)
+    OPTIONAL MATCH (c)<-[:PRODUCED]-(pm:PostMortem)<-[:DOCUMENTED_IN]-(inc:Incident)
     RETURN c.description AS constraint,
            c.type AS type,
            c.severity AS severity,

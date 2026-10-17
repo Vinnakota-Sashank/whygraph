@@ -13,25 +13,32 @@ from backend.agent.expertise_finder import find_experts
 from backend.config import config
 
 
-def _get_llm():
-    """Initialize the LLM based on config."""
-    try:
-        if config.LLM_PROVIDER == "google" and config.GOOGLE_API_KEY:
-            from langchain_google_genai import ChatGoogleGenerativeAI
-            return ChatGoogleGenerativeAI(
-                model="gemini-2.0-flash",
-                google_api_key=config.GOOGLE_API_KEY,
-                temperature=0.1,
-            )
-        elif config.LLM_PROVIDER == "openai" and config.OPENAI_API_KEY:
-            from langchain_openai import ChatOpenAI
-            return ChatOpenAI(
-                model="gpt-4o-mini",
-                api_key=config.OPENAI_API_KEY,
-                temperature=0.1,
-            )
-    except Exception as e:
-        print(f"  ⚠️  LLM initialization failed: {e}")
+def _call_llm(prompt: str):
+    """Invoke the configured LLM (Google Gemini gemini-3.8-flash or OpenAI)."""
+    if config.LLM_PROVIDER == "google" and config.GOOGLE_API_KEY:
+        try:
+            import google.generativeai as genai
+            genai.configure(api_key=config.GOOGLE_API_KEY)
+            model = genai.GenerativeModel("gemini-3.8-flash")
+            response = model.generate_content(prompt)
+            return response.text
+        except Exception as e:
+            print(f"  ⚠️  Gemini call error: {e}")
+
+    elif config.LLM_PROVIDER == "openai" and config.OPENAI_API_KEY:
+        try:
+            import httpx
+            headers = {"Authorization": f"Bearer {config.OPENAI_API_KEY}", "Content-Type": "application/json"}
+            payload = {
+                "model": "gpt-4o-mini",
+                "messages": [{"role": "user", "content": prompt}],
+                "temperature": 0.1,
+            }
+            res = httpx.post("https://api.openai.com/v1/chat/completions", json=payload, headers=headers, timeout=20.0)
+            if res.status_code == 200:
+                return res.json()["choices"][0]["message"]["content"]
+        except Exception as e:
+            print(f"  ⚠️  OpenAI call error: {e}")
 
     return None
 
@@ -226,7 +233,7 @@ def _handle_incidents(service_name: str) -> str:
     return "\n".join(lines)
 
 
-def _handle_general_with_llm(question: str, llm) -> str:
+def _handle_general_with_llm(question: str):
     """Use LLM with graph context to answer a general question."""
     g = get_graph()
 
@@ -274,11 +281,7 @@ If the information isn't in the graph, say "This information is not in the WhyGr
 Format your response in markdown.
 """
 
-    try:
-        response = llm.invoke(prompt)
-        return response.content
-    except Exception as e:
-        return f"⚠️ LLM error: {e}\n\nTry asking about a specific service, e.g., 'Why do we use Redis in checkout-service?'"
+    return _call_llm(prompt)
 
 
 def chat(question: str) -> str:
@@ -350,9 +353,9 @@ def chat(question: str) -> str:
             return "Please specify which service you're changing. Example: 'Would adding memcached to checkout-service violate any rules?'"
 
     # General question — try LLM, fall back to graph stats
-    llm = _get_llm()
-    if llm:
-        return _handle_general_with_llm(question, llm)
+    llm_answer = _handle_general_with_llm(question)
+    if llm_answer:
+        return llm_answer
     else:
         # No LLM available — provide graph overview
         g = get_graph()

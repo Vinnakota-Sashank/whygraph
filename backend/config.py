@@ -12,6 +12,7 @@ class Config:
     # FalkorDB
     FALKORDB_HOST: str = os.getenv("FALKORDB_HOST", "localhost")
     FALKORDB_PORT: int = int(os.getenv("FALKORDB_PORT", "6379"))
+    FALKORDB_USERNAME: str = os.getenv("FALKORDB_USERNAME", "")
     FALKORDB_PASSWORD: str = os.getenv("FALKORDB_PASSWORD", "")
     FALKORDB_GRAPH_NAME: str = os.getenv("FALKORDB_GRAPH_NAME", "whygraph")
 

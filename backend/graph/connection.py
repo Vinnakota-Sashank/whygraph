@@ -6,6 +6,16 @@ and automatically falls back to the high-fidelity in-memory FalkorDB graph engin
 for zero-friction development and demo execution when no database daemon is running.
 """
 
+import sys
+import os
+
+if sys.platform == "win32":
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+        sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
+
 from backend.config import config
 from backend.graph.in_memory_graph import InMemoryFalkorGraph
 
@@ -53,10 +63,22 @@ class GraphConnection:
         try:
             from falkordb import FalkorDB
 
+            host = config.FALKORDB_HOST.strip()
+            port = config.FALKORDB_PORT
+            if ":" in host:
+                parts = host.split(":", 1)
+                host = parts[0]
+                try:
+                    port = int(parts[1])
+                except ValueError:
+                    pass
+
             kwargs = {
-                "host": config.FALKORDB_HOST,
-                "port": config.FALKORDB_PORT,
+                "host": host,
+                "port": port,
             }
+            if config.FALKORDB_USERNAME:
+                kwargs["username"] = config.FALKORDB_USERNAME
             if config.FALKORDB_PASSWORD:
                 kwargs["password"] = config.FALKORDB_PASSWORD
 

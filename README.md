@@ -80,25 +80,50 @@ WhyGraph cannot be built with a relational or vector database alone:
   - **Source**: ADR-001 (Authored by Sarah Chen)
   - **Historical Outage Evidence**: INC-089 SEV-1 Outage (135 min downtime caused by Memcached connection saturation)
   - **Assigned Reviewers**: Top experts David Kumar (Score: 87) & Sarah Chen (Score: 72)
+  - **Interactive Slack Webhook Alert**: One-click preview of formatted Slack Block Kit alert dispatched to `#eng-checkout-alerts`.
 
-### 2. Dynamic Expertise Ranking
+### 2. Interactive Living Graph Visualizer (HTML5 Canvas)
+- Real-time physics-based node-link graph explorer visualizing live FalkorDB Cloud data.
+- Filter by entity type: Services, Constraints, ADRs, Incidents, Post-Mortems, and Engineers.
+- Click any node to inspect metadata and connected relationships in a glassmorphic panel.
+- **Violation Path Highlighter**: Pulses the 5-hop causal failure path in glowing neon red/violet.
+
+### 3. AI Coding Agent Guardrail (Cursor & Copilot Simulator)
+- Demonstrates how WhyGraph's Model Context Protocol (MCP) server prevents AI coding agents from generating hallucinated architectures.
+- Side-by-side interactive code diff:
+  - **Unguarded AI**: Generates naive Memcached code that repeats SEV-1 outage INC-089.
+  - **WhyGraph-Guarded AI**: Receives FalkorDB constraints via MCP and generates hardened, compliant Redis Cluster code with connection pooling.
+
+### 4. Real-Time Living Knowledge Ingestion (`POST /api/ingest/unstructured`)
+- Directly addresses Track 3's core mandate: *"Keeping knowledge current as things change."*
+- Engineers paste unstructured incident post-mortems, RFCs, or Slack incident discussions into WhyGraph.
+- Google Gemini extracts entities, constraints, and relationships.
+- FalkorDB creates nodes and links relationships in real time (< 2 seconds).
+
+### 5. Dynamic Multi-Signal Expertise Ranking
 - Replaces obsolete `CODEOWNERS` files with live, multi-signal scores:
   - Commits: 1.0 pt
   - PR Reviews: 0.5 pt
   - Incident Resolutions: 10.0 pts (deep operational awareness)
   - ADRs/Docs Authored: 3.0 pts
 
-### 3. Decision Lineage Q&A
+### 6. Executive Compliance & Bus-Factor Risk Audit (`GET /api/compliance/report`)
+- Evaluates corporate architectural health across all services.
+- Identifies Single Point of Failure (SPOF) / Bus-Factor risks where critical service knowledge is concentrated in only one engineer.
+- Downloadable JSON audit report for engineering leadership.
+
+### 7. Decision Lineage Q&A
 - Query: *"Why do we use Redis instead of Memcached?"*
-- Response cites ADR-001 reasons (data structures, persistence, pub/sub) and links to the post-mortem outage proof.
+- Powered by Google Gemini (`gemini-3.8-flash`) + FalkorDB graph reasoning, returning verifiable ADR and incident citations.
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **Graph Database**: FalkorDB (OpenCypher, Redis graph protocol)
+- **Graph Database**: FalkorDB (OpenCypher, Redis graph protocol, FalkorDB Cloud on AWS)
 - **Backend**: Python 3.10+, FastAPI, Pydantic, Uvicorn
-- **AI & Reasoning**: LangChain + Google Gemini API (`gemini-2.0-flash`) with fallback deterministic rule evaluation
+- **AI & Reasoning**: Google Gemini API (`gemini-3.8-flash`) + deterministic Cypher graph reasoning
+- **Protocols & Integrations**: Model Context Protocol (MCP), GitHub Actions CI/CD, Slack Block Kit
 - **Frontend**: Vanilla HTML5, CSS3 Glassmorphism dark mode, Vanilla JavaScript (zero framework bloat)
 
 ---
