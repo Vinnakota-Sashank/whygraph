@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WhyGraph — Engineering Decision Memory | FalkorDB</title>
+  <meta name="description" content="Proactive engineering decision memory agent stopping teams and AI agents from repeating costly architectural mistakes. Built with FalkorDB Graph Database.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="glow-bg glow-1"></div>
+  <div class="glow-bg glow-2"></div>
+  <div class="glow-bg glow-3"></div>
+
+  <!-- Top Navigation Bar -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="18" cy="5" r="3"></circle>
+            <circle cx="6" cy="12" r="3"></circle>
+            <circle cx="18" cy="19" r="3"></circle>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <div class="brand-title">Why<span class="gradient-text">Graph</span></div>
+          <div class="brand-subtitle">Company Brain &bull; FalkorDB Graph Hacks</div>
+        </div>
+      </div>
+
+      <div class="header-stats" id="header-stats">
+        <div class="stat-pill" title="Primary Database Engine">
+          <span class="pulse-indicator"></span>
+          <span class="stat-label">FalkorDB</span>
+          <span class="stat-value highlight" id="db-graph-name">whygraph</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-label">Nodes:</span>
+          <span class="stat-value" id="stat-nodes-count">--</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-label">Edges:</span>
+          <span class="stat-value" id="stat-edges-count">--</span>
+        </div>
+        <button id="btn-reingest" class="btn-ghost" title="Reset and re-ingest sample graph data">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+          </svg>
+          <span>Rebuild Graph</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="main-layout">
+    <!-- Navigation Tabs -->
+    <nav class="nav-tabs">
+      <button class="tab-btn active" id="tab-pr-guard" data-tab="section-pr-guard">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>
+        <span>PR Architectural Radar</span>
+        <span class="badge-killer">Killer Feature</span>
+      </button>
+      <button class="tab-btn" id="tab-chat" data-tab="section-chat">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+        <span>Decision Q&A Agent</span>
+      </button>
+      <button class="tab-btn" id="tab-experts" data-tab="section-experts">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+          <circle cx="9" cy="7" r="4"></circle>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+        </svg>
+        <span>Dynamic Expertise</span>
+      </button>
+      <button class="tab-btn" id="tab-explorer" data-tab="section-explorer">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="2" y1="12" x2="22" y2="12"></line>
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+        </svg>
+        <span>Knowledge Inventory</span>
+      </button>
+    </nav>
+
+    <!-- SECTION 1: PR Violation Guardrail (Killer Feature) -->
+    <section id="section-pr-guard" class="tab-content active">
+      <div class="content-header">
+        <div>
+          <h1 class="section-title">Automated PR & Decision Violation Radar</h1>
+          <p class="section-subtitle">Stops developers and AI code agents from repeating past architectural mistakes before code is merged.</p>
+        </div>
+        <div class="preset-group">
+          <span class="preset-label">Demo Presets:</span>
+          <button class="preset-chip" id="preset-memcached">⚠️ Add Memcached to Checkout (ADR-001 Violation)</button>
+          <button class="preset-chip" id="preset-sync-payment">⚠️ Sync Payment Call (ADR-002 Violation)</button>
+          <button class="preset-chip clean" id="preset-clean">✅ Compliant Redis/Postgres PR</button>
+        </div>
+      </div>
+
+      <div class="pr-grid">
+        <!-- Input Form Card -->
+        <div class="card glass-card">
+          <div class="card-header">
+            <h2 class="card-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="18" cy="18" r="3"></circle>
+                <circle cx="6" cy="6" r="3"></circle>
+                <path d="M13 6h3a2 2 0 0 1 2 2v7"></path>
+                <line x1="6" y1="9" x2="6" y2="21"></line>
+              </svg>
+              Simulate Pull Request / Commit
+            </h2>
+            <span class="pill-tag">Graph Traversal Trigger</span>
+          </div>
+
+          <form id="form-violation" class="form-container">
+            <div class="form-group">
+              <label for="select-service">Target Service Being Modified <span class="required">*</span></label>
+              <select id="select-service" class="input-field" required>
+                <option value="checkout-service">checkout-service (Python / Checkout Team)</option>
+                <option value="payment-service">payment-service (Go / Payments Team)</option>
+                <option value="order-service">order-service (Python / Checkout Team)</option>
+                <option value="inventory-service">inventory-service (Java / Platform Team)</option>
+                <option value="user-service">user-service (TypeScript / Core Team)</option>
+                <option value="analytics-service">analytics-service (Python / Data Team)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="input-dependencies">New Package Dependencies Added</label>
+              <input type="text" id="input-dependencies" class="input-field" placeholder="e.g. pymemcache, httpx, redis" value="pymemcache">
+              <span class="field-hint">Comma-separated list of new dependencies</span>
+            </div>
+
+            <div class="form-group">
+              <label for="input-files">Changed Files</label>
+              <textarea id="input-files" class="input-field textarea-sm" placeholder="e.g. services/checkout/cache.py">services/checkout/cache_client.py
+services/checkout/requirements.txt</textarea>
+              <span class="field-hint">Files modified in this PR/commit</span>
+            </div>
+
+            <button type="submit" id="btn-check-violation" class="btn-primary">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <span>Scan Graph for Architectural Violations</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Violation Results View -->
+        <div class="card glass-card result-card" id="violation-results-container">
+          <div class="card-header">
+            <h2 class="card-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                <line x1="12" y1="9" x2="12" y2="13"/>
+                <line x1="12" y1="17" x2="12.01" y2="17"/>
+              </svg>
+              Enforcement & Lineage Result
+            </h2>
+            <div id="violation-status-pill" class="status-pill idle">Ready to Scan</div>
+          </div>
+
+          <div id="violation-output" class="violation-output">
+            <div class="empty-state">
+              <div class="empty-icon">🛡️</div>
+              <div class="empty-text">Click "Scan Graph for Architectural Violations" or select a preset to analyze constraint compliance.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: Chat Agent -->
+    <section id="section-chat" class="tab-content">
+      <div class="content-header">
+        <div>
+          <h1 class="section-title">Decision Intelligence & Lineage Q&A</h1>
+          <p class="section-subtitle">Ask why technical choices were made, trace post-mortem lessons, and query the organizational memory.</p>
+        </div>
+      </div>
+
+      <div class="chat-container glass-card">
+        <div class="chat-suggestions">
+          <button class="suggestion-chip" data-query="Why do we use Redis instead of Memcached in checkout-service?">
+            ❓ Why Redis instead of Memcached?
+          </button>
+          <button class="suggestion-chip" data-query="Why must communication with payment-service be asynchronous?">
+            ❓ Why async payment communication?
+          </button>
+          <button class="suggestion-chip" data-query="Who knows about checkout-service?">
+            👤 Top checkout-service experts
+          </button>
+          <button class="suggestion-chip" data-query="What constraints apply to checkout-service?">
+            📋 Constraints on checkout-service
+          </button>
+        </div>
+
+        <div id="chat-messages" class="chat-messages">
+          <div class="chat-bubble bot">
+            <div class="bubble-avatar">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="18" cy="5" r="3"></circle>
+                <circle cx="6" cy="12" r="3"></circle>
+                <circle cx="18" cy="19" r="3"></circle>
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+              </svg>
+            </div>
+            <div class="bubble-content">
+              <p><strong>Hello! I am WhyGraph.</strong> I am your organization's engineering decision memory agent powered by FalkorDB.</p>
+              <p>I can explain <em>why</em> technical decisions were made, what rules govern services, who the true experts are, and what past outages shaped our architecture.</p>
+              <p>Try asking a question or clicking one of the suggested prompts above!</p>
+            </div>
+          </div>
+        </div>
+
+        <form id="form-chat" class="chat-input-bar">
+          <input type="text" id="input-chat" class="chat-input" placeholder="Ask a question about architectural decisions, rules, or expertise..." autocomplete="off" required>
+          <button type="submit" id="btn-chat-send" class="btn-primary btn-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- SECTION 3: Dynamic Expertise -->
+    <section id="section-experts" class="tab-content">
+      <div class="content-header">
+        <div>
+          <h1 class="section-title">Dynamic Multi-Signal Expertise Finder</h1>
+          <p class="section-subtitle">Moving beyond stale CODEOWNERS files using live graph scoring (commits, reviews, incident responses, docs).</p>
+        </div>
+        <div class="service-selector-inline">
+          <label for="select-expert-service">Service:</label>
+          <select id="select-expert-service" class="input-field select-inline">
+            <option value="checkout-service">checkout-service</option>
+            <option value="payment-service">payment-service</option>
+            <option value="order-service">order-service</option>
+            <option value="inventory-service">inventory-service</option>
+            <option value="user-service">user-service</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="experts-container" class="experts-grid">
+        <!-- Rendered dynamically via JS -->
+      </div>
+    </section>
+
+    <!-- SECTION 4: Knowledge Inventory (Graph Overview) -->
+    <section id="section-explorer" class="tab-content">
+      <div class="content-header">
+        <div>
+          <h1 class="section-title">Knowledge Graph Inventory & Lineage</h1>
+          <p class="section-subtitle">Real-time view of entities, active constraints, and historical incident post-mortems in FalkorDB.</p>
+        </div>
+      </div>
+
+      <div class="inventory-tabs">
+        <button class="subtab-btn active" data-subtab="subtab-constraints">Active Constraints</button>
+        <button class="subtab-btn" data-subtab="subtab-incidents">Incidents & Post-Mortems</button>
+        <button class="subtab-btn" data-subtab="subtab-services">Services & Ownership</button>
+      </div>
+
+      <div id="subtab-constraints" class="subtab-content active">
+        <div id="constraints-list" class="table-container glass-card">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
+      <div id="subtab-incidents" class="subtab-content">
+        <div id="incidents-list" class="table-container glass-card">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
+      <div id="subtab-services" class="subtab-content">
+        <div id="services-list" class="table-container glass-card">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <div class="footer-content">
+      <span>WhyGraph &bull; Built for <strong>FalkorDB Graph Hacks (Track 3: Company Brain)</strong></span>
+      <span class="footer-divider">|</span>
+      <span>Powered by <strong>FalkorDB Graph Engine</strong> + FastAPI + Google Gemini</span>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

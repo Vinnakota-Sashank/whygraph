@@ -1,0 +1,83 @@
+{
+  "services": [
+    {
+      "name": "checkout-service",
+      "repo": "acme-corp/checkout-service",
+      "language": "python",
+      "team": "checkout",
+      "description": "Handles shopping cart, checkout flow, and order placement",
+      "dependencies": ["payment-service", "inventory-service", "user-service"],
+      "modules": [
+        { "name": "cart", "filePath": "src/cart/" },
+        { "name": "checkout_flow", "filePath": "src/checkout/" },
+        { "name": "payment_integration", "filePath": "src/payment/" },
+        { "name": "caching", "filePath": "src/cache/" }
+      ]
+    },
+    {
+      "name": "payment-service",
+      "repo": "acme-corp/payment-service",
+      "language": "python",
+      "team": "checkout",
+      "description": "Processes payments via Stripe, manages refunds and payment status",
+      "dependencies": [],
+      "modules": [
+        { "name": "stripe_gateway", "filePath": "src/gateway/" },
+        { "name": "refunds", "filePath": "src/refunds/" },
+        { "name": "webhooks", "filePath": "src/webhooks/" }
+      ]
+    },
+    {
+      "name": "user-service",
+      "repo": "acme-corp/user-service",
+      "language": "python",
+      "team": "frontend",
+      "description": "User authentication, profiles, and preferences",
+      "dependencies": [],
+      "modules": [
+        { "name": "auth", "filePath": "src/auth/" },
+        { "name": "profiles", "filePath": "src/profiles/" },
+        { "name": "preferences", "filePath": "src/preferences/" }
+      ]
+    },
+    {
+      "name": "inventory-service",
+      "repo": "acme-corp/inventory-service",
+      "language": "python",
+      "team": "platform",
+      "description": "Manages product stock levels, reservations, and warehouse sync",
+      "dependencies": [],
+      "modules": [
+        { "name": "stock", "filePath": "src/stock/" },
+        { "name": "reservations", "filePath": "src/reservations/" },
+        { "name": "warehouse_sync", "filePath": "src/warehouse/" }
+      ]
+    },
+    {
+      "name": "order-service",
+      "repo": "acme-corp/order-service",
+      "language": "python",
+      "team": "checkout",
+      "description": "Order lifecycle management, status tracking, and fulfillment",
+      "dependencies": ["payment-service", "inventory-service"],
+      "modules": [
+        { "name": "order_lifecycle", "filePath": "src/orders/" },
+        { "name": "fulfillment", "filePath": "src/fulfillment/" },
+        { "name": "notifications", "filePath": "src/notifications/" }
+      ]
+    },
+    {
+      "name": "analytics-service",
+      "repo": "acme-corp/analytics-service",
+      "language": "python",
+      "team": "data",
+      "description": "Business analytics, reporting dashboards, and data pipelines",
+      "dependencies": ["user-service", "order-service"],
+      "modules": [
+        { "name": "pipelines", "filePath": "src/pipelines/" },
+        { "name": "dashboards", "filePath": "src/dashboards/" },
+        { "name": "exports", "filePath": "src/exports/" }
+      ]
+    }
+  ]
+}

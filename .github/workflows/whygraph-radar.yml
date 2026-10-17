@@ -1,0 +1,32 @@
+name: WhyGraph Architectural Radar
+
+on:
+  pull_request:
+    branches: [ main, master ]
+    types: [ opened, synchronize, reopened ]
+
+jobs:
+  architectural-guardrail:
+    runs-on: ubuntu-latest
+    name: Verify Architectural Decisions & Constraints
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install WhyGraph Dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run WhyGraph PR Violation Scan
+        run: |
+          python scripts/github_action_check.py \
+            --service checkout-service \
+            --deps "${{ steps.detect-deps.outputs.new_deps }}" \
+            --files "${{ steps.changed-files.outputs.all_changed_files }}"

@@ -1,0 +1,1745 @@
+{
+  "nodes": [
+    {
+      "key": "Team:platform",
+      "label": "Team",
+      "properties": {
+        "name": "platform",
+        "lead": "sarah.chen@example.com",
+        "domain": "Infrastructure, DevEx & Reliability"
+      }
+    },
+    {
+      "key": "Team:checkout",
+      "label": "Team",
+      "properties": {
+        "name": "checkout",
+        "lead": "david.kumar@example.com",
+        "domain": "Checkout, Cart & Payment Integration"
+      }
+    },
+    {
+      "key": "Team:data",
+      "label": "Team",
+      "properties": {
+        "name": "data",
+        "lead": "maria.garcia@example.com",
+        "domain": "Analytics, Data Pipelines & Reporting"
+      }
+    },
+    {
+      "key": "Team:frontend",
+      "label": "Team",
+      "properties": {
+        "name": "frontend",
+        "lead": "james.park@example.com",
+        "domain": "Web & Mobile UI"
+      }
+    },
+    {
+      "key": "Person:sarah.chen@example.com",
+      "label": "Person",
+      "properties": {
+        "email": "sarah.chen@example.com",
+        "name": "Sarah Chen",
+        "role": "Staff Engineer",
+        "team": null,
+        "isActive": true,
+        "githubHandle": "sarahchen",
+        "slackId": "U001SARAH"
+      }
+    },
+    {
+      "key": "Person:david.kumar@example.com",
+      "label": "Person",
+      "properties": {
+        "email": "david.kumar@example.com",
+        "name": "David Kumar",
+        "role": "Senior Engineer",
+        "team": null,
+        "isActive": true,
+        "githubHandle": "dkumar",
+        "slackId": "U002DAVID"
+      }
+    },
+    {
+      "key": "Person:maria.garcia@example.com",
+      "label": "Person",
+      "properties": {
+        "email": "maria.garcia@example.com",
+        "name": "Maria Garcia",
+        "role": "Principal Engineer",
+        "team": null,
+        "isActive": true,
+        "githubHandle": "mgarcia",
+        "slackId": "U003MARIA"
+      }
+    },
+    {
+      "key": "Person:alex.wong@example.com",
+      "label": "Person",
+      "properties": {
+        "email": "alex.wong@example.com",
+        "name": "Alex Wong",
+        "role": "Software Engineer",
+        "team": null,
+        "isActive": true,
+        "githubHandle": "awong",
+        "slackId": "U004ALEX"
+      }
+    },
+    {
+      "key": "Person:priya.patel@example.com",
+      "label": "Person",
+      "properties": {
+        "email": "priya.patel@example.com",
+        "name": "Priya Patel",
+        "role": "DevOps Engineer",
+        "team": null,
+        "isActive": true,
+        "githubHandle": "ppatel",
+        "slackId": "U005PRIYA"
+      }
+    },
+    {
+      "key": "Person:james.park@example.com",
+      "label": "Person",
+      "properties": {
+        "email": "james.park@example.com",
+        "name": "James Park",
+        "role": "Senior Frontend Engineer",
+        "team": null,
+        "isActive": true,
+        "githubHandle": "jpark",
+        "slackId": "U006JAMES"
+      }
+    },
+    {
+      "key": "Service:checkout-service",
+      "label": "Service",
+      "properties": {
+        "name": "checkout-service",
+        "repo": "acme-corp/checkout-service",
+        "language": "python",
+        "description": "Handles shopping cart, checkout flow, and order placement"
+      }
+    },
+    {
+      "key": "CodeModule:src/cart/",
+      "label": "CodeModule",
+      "properties": {
+        "filePath": "src/cart/",
+        "name": "cart"
+      }
+    },
+    {
+      "key": "CodeModule:src/checkout/",
+      "label": "CodeModule",
+      "properties": {
+        "filePath": "src/checkout/",
+        "name": "checkout_flow"
+      }
+    },
+    {
+      "key": "CodeModule:src/payment/",
+      "label": "CodeModule",
+      "properties": {
+        "filePath": "src/payment/",
+        "name": "payment_integration"
+      }
+    },
+    {
+      "key": "CodeModule:src/cache/",
+      "label": "CodeModule",
+      "properties": {
+        "filePath": "src/cache/",
+        "name": "caching"
+      }
+    },
+    {
+      "key": "Service:payment-service",
+      "label": "Service",
+      "properties": {
+        "name": "payment-service",
+        "repo": "acme-corp/payment-service",
+        "language": "python",
+        "description": "Processes payments via Stripe, manages refunds and payment status"
+      }
+    },
+    {
+      "key": "CodeModule:src/gateway/",
+      "label": "CodeModule",
+      "properties": {
+        "filePath": "src/gateway/",
+        "name": "stripe_gateway"
+      }
+    },
+    {
+      "key": "CodeModule:src/refunds/",
+      "label": "CodeModule",
+      "properties": {
+        "filePath": "src/refunds/",
+        "name": "refunds"
+      }
+    },
+    {
+      "key": "CodeModule:src/webhooks/",
+      "label": "CodeModule",
+      "properties": {
+        "filePath": "src/webhooks/",
+        "name": "webhooks"
+      }
+    },
+    {
+      "key": "Service:user-service",
+      "label": "Service",
+      "properties": {
+        "name": "user-service",
+        "repo": "acme-corp/user-service",
+        "language": "python",
+        "description": "User authentication, profiles, and preferences"
+      }
+    },
+    {
+      "key": "CodeModule:src/auth/",
+      "label": "CodeModule",
+      "properties": {
+        "filePath": "src/auth/",
+        "name": "auth"
+      }
+    },
+    {
+      "key": "CodeModule:src/profiles/",
+      "label": "CodeModule",
+      "properties": {
+        "filePath": "src/profiles/",
+        "name": "profiles"
+      }
+    },
+    {
+      "key": "CodeModule:src/preferences/",
+      "label": "CodeModule",
+      "properties": {
+        "filePath": "src/preferences/",
+        "name": "preferences"
+      }
+    },
+    {
+      "key": "Service:inventory-service",
+      "label": "Service",
+      "properties": {
+        "name": "inventory-service",
+        "repo": "acme-corp/inventory-service",
+        "language": "python",
+        "description": "Manages product stock levels, reservations, and warehouse sync"
+      }
+    },
+    {
+      "key": "CodeModule:src/stock/",
+      "label": "CodeModule",
+      "properties": {
+        "filePath": "src/stock/",
+        "name": "stock"
+      }
+    },
+    {
+      "key": "CodeModule:src/reservations/",
+      "label": "CodeModule",
+      "properties": {
+        "filePath": "src/reservations/",
+        "name": "reservations"
+      }
+    },
+    {
+      "key": "CodeModule:src/warehouse/",
+      "label": "CodeModule",
+      "properties": {
+        "filePath": "src/warehouse/",
+        "name": "warehouse_sync"
+      }
+    },
+    {
+      "key": "Service:order-service",
+      "label": "Service",
+      "properties": {
+        "name": "order-service",
+        "repo": "acme-corp/order-service",
+        "language": "python",
+        "description": "Order lifecycle management, status tracking, and fulfillment"
+      }
+    },
+    {
+      "key": "CodeModule:src/orders/",
+      "label": "CodeModule",
+      "properties": {
+        "filePath": "src/orders/",
+        "name": "order_lifecycle"
+      }
+    },
+    {
+      "key": "CodeModule:src/fulfillment/",
+      "label": "CodeModule",
+      "properties": {
+        "filePath": "src/fulfillment/",
+        "name": "fulfillment"
+      }
+    },
+    {
+      "key": "CodeModule:src/notifications/",
+      "label": "CodeModule",
+      "properties": {
+        "filePath": "src/notifications/",
+        "name": "notifications"
+      }
+    },
+    {
+      "key": "Service:analytics-service",
+      "label": "Service",
+      "properties": {
+        "name": "analytics-service",
+        "repo": "acme-corp/analytics-service",
+        "language": "python",
+        "description": "Business analytics, reporting dashboards, and data pipelines"
+      }
+    },
+    {
+      "key": "CodeModule:src/pipelines/",
+      "label": "CodeModule",
+      "properties": {
+        "filePath": "src/pipelines/",
+        "name": "pipelines"
+      }
+    },
+    {
+      "key": "CodeModule:src/dashboards/",
+      "label": "CodeModule",
+      "properties": {
+        "filePath": "src/dashboards/",
+        "name": "dashboards"
+      }
+    },
+    {
+      "key": "CodeModule:src/exports/",
+      "label": "CodeModule",
+      "properties": {
+        "filePath": "src/exports/",
+        "name": "exports"
+      }
+    },
+    {
+      "key": "ADR:ADR-001",
+      "label": "ADR",
+      "properties": {
+        "id": "ADR-001",
+        "title": "Use Redis for Application Caching",
+        "status": "accepted",
+        "date": "2026-03-15",
+        "filePath": "C:\\Users\\vinna\\OneDrive\\Documents\\minor_project\\whygraph\\data\\adrs\\ADR-001-use-redis.md"
+      }
+    },
+    {
+      "key": "Constraint:ADR-001-C1",
+      "label": "Constraint",
+      "properties": {
+        "id": "ADR-001-C1",
+        "description": "All services MUST use the shared Redis cluster for caching (no local Memcached, no embedded caches)",
+        "type": "OPERATIONAL",
+        "severity": "MUST",
+        "isActive": true,
+        "extractedAt": "2026-03-15",
+        "lastValidatedAt": "2026-03-15",
+        "source": "ADR"
+      }
+    },
+    {
+      "key": "Constraint:ADR-001-C2",
+      "label": "Constraint",
+      "properties": {
+        "id": "ADR-001-C2",
+        "description": "Memcached is NOT permitted in any service \u2014 no exceptions without platform team review",
+        "type": "ARCHITECTURAL",
+        "severity": "MUST",
+        "isActive": true,
+        "extractedAt": "2026-03-15",
+        "lastValidatedAt": "2026-03-15",
+        "source": "ADR"
+      }
+    },
+    {
+      "key": "Constraint:ADR-001-C3",
+      "label": "Constraint",
+      "properties": {
+        "id": "ADR-001-C3",
+        "description": "Cache keys must follow namespace convention: `{service}:{entity}:{id}`",
+        "type": "OPERATIONAL",
+        "severity": "MUST",
+        "isActive": true,
+        "extractedAt": "2026-03-15",
+        "lastValidatedAt": "2026-03-15",
+        "source": "ADR"
+      }
+    },
+    {
+      "key": "Constraint:ADR-001-C4",
+      "label": "Constraint",
+      "properties": {
+        "id": "ADR-001-C4",
+        "description": "TTL must be explicitly set on all keys (no infinite TTL)",
+        "type": "OPERATIONAL",
+        "severity": "MUST",
+        "isActive": true,
+        "extractedAt": "2026-03-15",
+        "lastValidatedAt": "2026-03-15",
+        "source": "ADR"
+      }
+    },
+    {
+      "key": "Constraint:ADR-001-C5",
+      "label": "Constraint",
+      "properties": {
+        "id": "ADR-001-C5",
+        "description": "Connection pooling is mandatory (min 5, max 20 connections per service instance)",
+        "type": "PERFORMANCE",
+        "severity": "MUST",
+        "isActive": true,
+        "extractedAt": "2026-03-15",
+        "lastValidatedAt": "2026-03-15",
+        "source": "ADR"
+      }
+    },
+    {
+      "key": "ADR:ADR-002",
+      "label": "ADR",
+      "properties": {
+        "id": "ADR-002",
+        "title": "Asynchronous Communication with Payment Service",
+        "status": "accepted",
+        "date": "2026-02-20",
+        "filePath": "C:\\Users\\vinna\\OneDrive\\Documents\\minor_project\\whygraph\\data\\adrs\\ADR-002-async-payment.md"
+      }
+    },
+    {
+      "key": "Constraint:ADR-002-C1",
+      "label": "Constraint",
+      "properties": {
+        "id": "ADR-002-C1",
+        "description": "checkout-service MUST NOT make synchronous HTTP calls to payment-service",
+        "type": "ARCHITECTURAL",
+        "severity": "MUST",
+        "isActive": true,
+        "extractedAt": "2026-02-20",
+        "lastValidatedAt": "2026-02-20",
+        "source": "ADR"
+      }
+    },
+    {
+      "key": "Constraint:ADR-002-C2",
+      "label": "Constraint",
+      "properties": {
+        "id": "ADR-002-C2",
+        "description": "All payment requests must go through the `payment.requests` RabbitMQ queue",
+        "type": "OPERATIONAL",
+        "severity": "MUST",
+        "isActive": true,
+        "extractedAt": "2026-02-20",
+        "lastValidatedAt": "2026-02-20",
+        "source": "ADR"
+      }
+    },
+    {
+      "key": "Constraint:ADR-002-C3",
+      "label": "Constraint",
+      "properties": {
+        "id": "ADR-002-C3",
+        "description": "Payment confirmations come back via `payment.confirmations` queue",
+        "type": "OPERATIONAL",
+        "severity": "SHOULD",
+        "isActive": true,
+        "extractedAt": "2026-02-20",
+        "lastValidatedAt": "2026-02-20",
+        "source": "ADR"
+      }
+    },
+    {
+      "key": "Constraint:ADR-002-C4",
+      "label": "Constraint",
+      "properties": {
+        "id": "ADR-002-C4",
+        "description": "Timeout for payment confirmation: 30 seconds (after which order is marked \"pending_payment\")",
+        "type": "PERFORMANCE",
+        "severity": "SHOULD",
+        "isActive": true,
+        "extractedAt": "2026-02-20",
+        "lastValidatedAt": "2026-02-20",
+        "source": "ADR"
+      }
+    },
+    {
+      "key": "Constraint:ADR-002-C5",
+      "label": "Constraint",
+      "properties": {
+        "id": "ADR-002-C5",
+        "description": "Direct REST calls to payment-service are only allowed for admin/backoffice read operations",
+        "type": "OPERATIONAL",
+        "severity": "SHOULD",
+        "isActive": true,
+        "extractedAt": "2026-02-20",
+        "lastValidatedAt": "2026-02-20",
+        "source": "ADR"
+      }
+    },
+    {
+      "key": "ADR:ADR-003",
+      "label": "ADR",
+      "properties": {
+        "id": "ADR-003",
+        "title": "PostgreSQL as Primary Database Engine",
+        "status": "accepted",
+        "date": "2026-01-10",
+        "filePath": "C:\\Users\\vinna\\OneDrive\\Documents\\minor_project\\whygraph\\data\\adrs\\ADR-003-use-postgres.md"
+      }
+    },
+    {
+      "key": "Constraint:ADR-003-C1",
+      "label": "Constraint",
+      "properties": {
+        "id": "ADR-003-C1",
+        "description": "All services MUST use PostgreSQL as their primary data store",
+        "type": "OPERATIONAL",
+        "severity": "MUST",
+        "isActive": true,
+        "extractedAt": "2026-01-10",
+        "lastValidatedAt": "2026-01-10",
+        "source": "ADR"
+      }
+    },
+    {
+      "key": "Constraint:ADR-003-C2",
+      "label": "Constraint",
+      "properties": {
+        "id": "ADR-003-C2",
+        "description": "MongoDB is NOT approved for any production service",
+        "type": "OPERATIONAL",
+        "severity": "SHOULD",
+        "isActive": true,
+        "extractedAt": "2026-01-10",
+        "lastValidatedAt": "2026-01-10",
+        "source": "ADR"
+      }
+    },
+    {
+      "key": "Constraint:ADR-003-C3",
+      "label": "Constraint",
+      "properties": {
+        "id": "ADR-003-C3",
+        "description": "DynamoDB may be used ONLY for specific event sourcing / append-only log patterns with ARB approval",
+        "type": "OPERATIONAL",
+        "severity": "SHOULD",
+        "isActive": true,
+        "extractedAt": "2026-01-10",
+        "lastValidatedAt": "2026-01-10",
+        "source": "ADR"
+      }
+    },
+    {
+      "key": "Constraint:ADR-003-C4",
+      "label": "Constraint",
+      "properties": {
+        "id": "ADR-003-C4",
+        "description": "All schemas must have migration files checked into the service repository",
+        "type": "OPERATIONAL",
+        "severity": "MUST",
+        "isActive": true,
+        "extractedAt": "2026-01-10",
+        "lastValidatedAt": "2026-01-10",
+        "source": "ADR"
+      }
+    },
+    {
+      "key": "Constraint:ADR-003-C5",
+      "label": "Constraint",
+      "properties": {
+        "id": "ADR-003-C5",
+        "description": "Connection pooling via pgBouncer is mandatory for all services",
+        "type": "PERFORMANCE",
+        "severity": "MUST",
+        "isActive": true,
+        "extractedAt": "2026-01-10",
+        "lastValidatedAt": "2026-01-10",
+        "source": "ADR"
+      }
+    },
+    {
+      "key": "PostMortem:PM-001",
+      "label": "PostMortem",
+      "properties": {
+        "id": "PM-001",
+        "title": "Checkout Service Outage Due to Unauthorized Memcached Usage",
+        "severity": "SEV-1",
+        "date": "2026-05-22",
+        "duration": 135,
+        "duration_minutes": 135,
+        "rootCause": "checkout-service",
+        "filePath": "C:\\Users\\vinna\\OneDrive\\Documents\\minor_project\\whygraph\\data\\postmortems\\PM-001-memcached-outage.md"
+      }
+    },
+    {
+      "key": "Incident:INC-089",
+      "label": "Incident",
+      "properties": {
+        "id": "INC-089",
+        "title": "Checkout Service Outage Due to Unauthorized Memcached Usage",
+        "severity": "SEV-1",
+        "date": "2026-05-22",
+        "duration_minutes": 135
+      }
+    },
+    {
+      "key": "Constraint:PM-001-C1",
+      "label": "Constraint",
+      "properties": {
+        "id": "PM-001-C1",
+        "description": "Memcached must NEVER be used in any service. ADR-001 exists for exactly this reason.",
+        "type": "ARCHITECTURAL",
+        "severity": "MUST",
+        "isActive": true,
+        "extractedAt": "2026-05-22",
+        "lastValidatedAt": "2026-05-22",
+        "source": "ADR"
+      }
+    },
+    {
+      "key": "Constraint:PM-001-C2",
+      "label": "Constraint",
+      "properties": {
+        "id": "PM-001-C2",
+        "description": "All new caching dependencies must be reviewed by the platform team before merge.",
+        "type": "ARCHITECTURAL",
+        "severity": "MUST",
+        "isActive": true,
+        "extractedAt": "2026-05-22",
+        "lastValidatedAt": "2026-05-22",
+        "source": "ADR"
+      }
+    },
+    {
+      "key": "Constraint:PM-001-C3",
+      "label": "Constraint",
+      "properties": {
+        "id": "PM-001-C3",
+        "description": "All services must have circuit breakers on external connection pools.",
+        "type": "ARCHITECTURAL",
+        "severity": "MUST",
+        "isActive": true,
+        "extractedAt": "2026-05-22",
+        "lastValidatedAt": "2026-05-22",
+        "source": "ADR"
+      }
+    },
+    {
+      "key": "PostMortem:PM-002",
+      "label": "PostMortem",
+      "properties": {
+        "id": "PM-002",
+        "title": "Cascading Timeout Failure from Synchronous Payment Calls",
+        "severity": "SEV-1",
+        "date": "2026-07-14",
+        "duration": 90,
+        "duration_minutes": 90,
+        "rootCause": "checkout-service",
+        "filePath": "C:\\Users\\vinna\\OneDrive\\Documents\\minor_project\\whygraph\\data\\postmortems\\PM-002-sync-payment-cascade.md"
+      }
+    },
+    {
+      "key": "Incident:INC-112",
+      "label": "Incident",
+      "properties": {
+        "id": "INC-112",
+        "title": "Cascading Timeout Failure from Synchronous Payment Calls",
+        "severity": "SEV-1",
+        "date": "2026-07-14",
+        "duration_minutes": 90
+      }
+    },
+    {
+      "key": "Constraint:PM-002-C1",
+      "label": "Constraint",
+      "properties": {
+        "id": "PM-002-C1",
+        "description": "Synchronous HTTP calls to payment-service from checkout flow are absolutely prohibited. ADR-002 was written specifically because of a similar incident in 2025.",
+        "type": "ARCHITECTURAL",
+        "severity": "MUST",
+        "isActive": true,
+        "extractedAt": "2026-07-14",
+        "lastValidatedAt": "2026-07-14",
+        "source": "ADR"
+      }
+    },
+    {
+      "key": "Constraint:PM-002-C2",
+      "label": "Constraint",
+      "properties": {
+        "id": "PM-002-C2",
+        "description": "Any new inter-service communication pattern must be reviewed by the platform team.",
+        "type": "ARCHITECTURAL",
+        "severity": "MUST",
+        "isActive": true,
+        "extractedAt": "2026-07-14",
+        "lastValidatedAt": "2026-07-14",
+        "source": "ADR"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "type": "MEMBER_OF",
+      "start_key": "Person:sarah.chen@example.com",
+      "end_key": "Team:platform",
+      "properties": {}
+    },
+    {
+      "type": "MEMBER_OF",
+      "start_key": "Person:david.kumar@example.com",
+      "end_key": "Team:checkout",
+      "properties": {}
+    },
+    {
+      "type": "MEMBER_OF",
+      "start_key": "Person:maria.garcia@example.com",
+      "end_key": "Team:data",
+      "properties": {}
+    },
+    {
+      "type": "MEMBER_OF",
+      "start_key": "Person:alex.wong@example.com",
+      "end_key": "Team:checkout",
+      "properties": {}
+    },
+    {
+      "type": "MEMBER_OF",
+      "start_key": "Person:priya.patel@example.com",
+      "end_key": "Team:platform",
+      "properties": {}
+    },
+    {
+      "type": "MEMBER_OF",
+      "start_key": "Person:james.park@example.com",
+      "end_key": "Team:frontend",
+      "properties": {}
+    },
+    {
+      "type": "EXPERT_IN",
+      "start_key": "Person:sarah.chen@example.com",
+      "end_key": "Service:checkout-service",
+      "properties": {
+        "score": 42,
+        "commits": 47,
+        "reviews": 89,
+        "incidents_resolved": 3,
+        "docs_authored": 2
+      }
+    },
+    {
+      "type": "EXPERT_IN",
+      "start_key": "Person:sarah.chen@example.com",
+      "end_key": "Service:user-service",
+      "properties": {
+        "score": 8,
+        "commits": 12,
+        "reviews": 23,
+        "incidents_resolved": 0,
+        "docs_authored": 1
+      }
+    },
+    {
+      "type": "EXPERT_IN",
+      "start_key": "Person:sarah.chen@example.com",
+      "end_key": "Service:inventory-service",
+      "properties": {
+        "score": 23,
+        "commits": 31,
+        "reviews": 55,
+        "incidents_resolved": 1,
+        "docs_authored": 1
+      }
+    },
+    {
+      "type": "EXPERT_IN",
+      "start_key": "Person:sarah.chen@example.com",
+      "end_key": "Service:payment-service",
+      "properties": {
+        "score": 17,
+        "commits": 8,
+        "reviews": 42,
+        "incidents_resolved": 2,
+        "docs_authored": 1
+      }
+    },
+    {
+      "type": "EXPERT_IN",
+      "start_key": "Person:david.kumar@example.com",
+      "end_key": "Service:checkout-service",
+      "properties": {
+        "score": 77,
+        "commits": 156,
+        "reviews": 34,
+        "incidents_resolved": 5,
+        "docs_authored": 3
+      }
+    },
+    {
+      "type": "EXPERT_IN",
+      "start_key": "Person:david.kumar@example.com",
+      "end_key": "Service:payment-service",
+      "properties": {
+        "score": 17,
+        "commits": 23,
+        "reviews": 12,
+        "incidents_resolved": 2,
+        "docs_authored": 1
+      }
+    },
+    {
+      "type": "EXPERT_IN",
+      "start_key": "Person:david.kumar@example.com",
+      "end_key": "Service:order-service",
+      "properties": {
+        "score": 30,
+        "commits": 67,
+        "reviews": 28,
+        "incidents_resolved": 1,
+        "docs_authored": 0
+      }
+    },
+    {
+      "type": "EXPERT_IN",
+      "start_key": "Person:maria.garcia@example.com",
+      "end_key": "Service:analytics-service",
+      "properties": {
+        "score": 90,
+        "commits": 203,
+        "reviews": 67,
+        "incidents_resolved": 2,
+        "docs_authored": 5
+      }
+    },
+    {
+      "type": "EXPERT_IN",
+      "start_key": "Person:maria.garcia@example.com",
+      "end_key": "Service:user-service",
+      "properties": {
+        "score": 25,
+        "commits": 45,
+        "reviews": 31,
+        "incidents_resolved": 1,
+        "docs_authored": 2
+      }
+    },
+    {
+      "type": "EXPERT_IN",
+      "start_key": "Person:maria.garcia@example.com",
+      "end_key": "Service:order-service",
+      "properties": {
+        "score": 15,
+        "commits": 34,
+        "reviews": 19,
+        "incidents_resolved": 0,
+        "docs_authored": 1
+      }
+    },
+    {
+      "type": "EXPERT_IN",
+      "start_key": "Person:alex.wong@example.com",
+      "end_key": "Service:checkout-service",
+      "properties": {
+        "score": 40,
+        "commits": 89,
+        "reviews": 45,
+        "incidents_resolved": 1,
+        "docs_authored": 0
+      }
+    },
+    {
+      "type": "EXPERT_IN",
+      "start_key": "Person:alex.wong@example.com",
+      "end_key": "Service:payment-service",
+      "properties": {
+        "score": 8,
+        "commits": 12,
+        "reviews": 8,
+        "incidents_resolved": 1,
+        "docs_authored": 0
+      }
+    },
+    {
+      "type": "EXPERT_IN",
+      "start_key": "Person:priya.patel@example.com",
+      "end_key": "Service:inventory-service",
+      "properties": {
+        "score": 23,
+        "commits": 15,
+        "reviews": 22,
+        "incidents_resolved": 4,
+        "docs_authored": 1
+      }
+    },
+    {
+      "type": "EXPERT_IN",
+      "start_key": "Person:priya.patel@example.com",
+      "end_key": "Service:checkout-service",
+      "properties": {
+        "score": 14,
+        "commits": 5,
+        "reviews": 18,
+        "incidents_resolved": 3,
+        "docs_authored": 0
+      }
+    },
+    {
+      "type": "EXPERT_IN",
+      "start_key": "Person:james.park@example.com",
+      "end_key": "Service:checkout-service",
+      "properties": {
+        "score": 21,
+        "commits": 34,
+        "reviews": 56,
+        "incidents_resolved": 0,
+        "docs_authored": 1
+      }
+    },
+    {
+      "type": "EXPERT_IN",
+      "start_key": "Person:james.park@example.com",
+      "end_key": "Service:user-service",
+      "properties": {
+        "score": 32,
+        "commits": 78,
+        "reviews": 41,
+        "incidents_resolved": 0,
+        "docs_authored": 0
+      }
+    },
+    {
+      "type": "RESPONSIBLE_FOR",
+      "start_key": "Team:checkout",
+      "end_key": "Service:checkout-service",
+      "properties": {}
+    },
+    {
+      "type": "PART_OF",
+      "start_key": "CodeModule:src/cart/",
+      "end_key": "Service:None",
+      "properties": {}
+    },
+    {
+      "type": "PART_OF",
+      "start_key": "CodeModule:src/checkout/",
+      "end_key": "Service:None",
+      "properties": {}
+    },
+    {
+      "type": "PART_OF",
+      "start_key": "CodeModule:src/payment/",
+      "end_key": "Service:None",
+      "properties": {}
+    },
+    {
+      "type": "PART_OF",
+      "start_key": "CodeModule:src/cache/",
+      "end_key": "Service:None",
+      "properties": {}
+    },
+    {
+      "type": "RESPONSIBLE_FOR",
+      "start_key": "Team:checkout",
+      "end_key": "Service:payment-service",
+      "properties": {}
+    },
+    {
+      "type": "PART_OF",
+      "start_key": "CodeModule:src/gateway/",
+      "end_key": "Service:None",
+      "properties": {}
+    },
+    {
+      "type": "PART_OF",
+      "start_key": "CodeModule:src/refunds/",
+      "end_key": "Service:None",
+      "properties": {}
+    },
+    {
+      "type": "PART_OF",
+      "start_key": "CodeModule:src/webhooks/",
+      "end_key": "Service:None",
+      "properties": {}
+    },
+    {
+      "type": "RESPONSIBLE_FOR",
+      "start_key": "Team:frontend",
+      "end_key": "Service:user-service",
+      "properties": {}
+    },
+    {
+      "type": "PART_OF",
+      "start_key": "CodeModule:src/auth/",
+      "end_key": "Service:None",
+      "properties": {}
+    },
+    {
+      "type": "PART_OF",
+      "start_key": "CodeModule:src/profiles/",
+      "end_key": "Service:None",
+      "properties": {}
+    },
+    {
+      "type": "PART_OF",
+      "start_key": "CodeModule:src/preferences/",
+      "end_key": "Service:None",
+      "properties": {}
+    },
+    {
+      "type": "RESPONSIBLE_FOR",
+      "start_key": "Team:platform",
+      "end_key": "Service:inventory-service",
+      "properties": {}
+    },
+    {
+      "type": "PART_OF",
+      "start_key": "CodeModule:src/stock/",
+      "end_key": "Service:None",
+      "properties": {}
+    },
+    {
+      "type": "PART_OF",
+      "start_key": "CodeModule:src/reservations/",
+      "end_key": "Service:None",
+      "properties": {}
+    },
+    {
+      "type": "PART_OF",
+      "start_key": "CodeModule:src/warehouse/",
+      "end_key": "Service:None",
+      "properties": {}
+    },
+    {
+      "type": "RESPONSIBLE_FOR",
+      "start_key": "Team:checkout",
+      "end_key": "Service:order-service",
+      "properties": {}
+    },
+    {
+      "type": "PART_OF",
+      "start_key": "CodeModule:src/orders/",
+      "end_key": "Service:None",
+      "properties": {}
+    },
+    {
+      "type": "PART_OF",
+      "start_key": "CodeModule:src/fulfillment/",
+      "end_key": "Service:None",
+      "properties": {}
+    },
+    {
+      "type": "PART_OF",
+      "start_key": "CodeModule:src/notifications/",
+      "end_key": "Service:None",
+      "properties": {}
+    },
+    {
+      "type": "RESPONSIBLE_FOR",
+      "start_key": "Team:data",
+      "end_key": "Service:analytics-service",
+      "properties": {}
+    },
+    {
+      "type": "PART_OF",
+      "start_key": "CodeModule:src/pipelines/",
+      "end_key": "Service:None",
+      "properties": {}
+    },
+    {
+      "type": "PART_OF",
+      "start_key": "CodeModule:src/dashboards/",
+      "end_key": "Service:None",
+      "properties": {}
+    },
+    {
+      "type": "PART_OF",
+      "start_key": "CodeModule:src/exports/",
+      "end_key": "Service:None",
+      "properties": {}
+    },
+    {
+      "type": "DEPENDS_ON",
+      "start_key": "Service:checkout-service",
+      "end_key": "Service:None",
+      "properties": {}
+    },
+    {
+      "type": "DEPENDS_ON",
+      "start_key": "Service:checkout-service",
+      "end_key": "Service:None",
+      "properties": {}
+    },
+    {
+      "type": "DEPENDS_ON",
+      "start_key": "Service:checkout-service",
+      "end_key": "Service:None",
+      "properties": {}
+    },
+    {
+      "type": "DEPENDS_ON",
+      "start_key": "Service:order-service",
+      "end_key": "Service:None",
+      "properties": {}
+    },
+    {
+      "type": "DEPENDS_ON",
+      "start_key": "Service:order-service",
+      "end_key": "Service:None",
+      "properties": {}
+    },
+    {
+      "type": "DEPENDS_ON",
+      "start_key": "Service:analytics-service",
+      "end_key": "Service:None",
+      "properties": {}
+    },
+    {
+      "type": "DEPENDS_ON",
+      "start_key": "Service:analytics-service",
+      "end_key": "Service:None",
+      "properties": {}
+    },
+    {
+      "type": "CONSTRAINS",
+      "start_key": "ADR:None",
+      "end_key": "Service:None",
+      "properties": {}
+    },
+    {
+      "type": "CONSTRAINS",
+      "start_key": "ADR:None",
+      "end_key": "Service:None",
+      "properties": {}
+    },
+    {
+      "type": "CONSTRAINS",
+      "start_key": "ADR:None",
+      "end_key": "Service:None",
+      "properties": {}
+    },
+    {
+      "type": "AUTHORED",
+      "start_key": "Person:None",
+      "end_key": "ADR:None",
+      "properties": {}
+    },
+    {
+      "type": "DEFINES",
+      "start_key": "ADR:ADR-001",
+      "end_key": "Constraint:ADR-001-C1",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-001-C1",
+      "end_key": "Service:checkout-service",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-001-C1",
+      "end_key": "Service:inventory-service",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-001-C1",
+      "end_key": "Service:user-service",
+      "properties": {}
+    },
+    {
+      "type": "DEFINES",
+      "start_key": "ADR:ADR-001",
+      "end_key": "Constraint:ADR-001-C2",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-001-C2",
+      "end_key": "Service:checkout-service",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-001-C2",
+      "end_key": "Service:inventory-service",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-001-C2",
+      "end_key": "Service:user-service",
+      "properties": {}
+    },
+    {
+      "type": "DEFINES",
+      "start_key": "ADR:ADR-001",
+      "end_key": "Constraint:ADR-001-C3",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-001-C3",
+      "end_key": "Service:checkout-service",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-001-C3",
+      "end_key": "Service:inventory-service",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-001-C3",
+      "end_key": "Service:user-service",
+      "properties": {}
+    },
+    {
+      "type": "DEFINES",
+      "start_key": "ADR:ADR-001",
+      "end_key": "Constraint:ADR-001-C4",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-001-C4",
+      "end_key": "Service:checkout-service",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-001-C4",
+      "end_key": "Service:inventory-service",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-001-C4",
+      "end_key": "Service:user-service",
+      "properties": {}
+    },
+    {
+      "type": "DEFINES",
+      "start_key": "ADR:ADR-001",
+      "end_key": "Constraint:ADR-001-C5",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-001-C5",
+      "end_key": "Service:checkout-service",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-001-C5",
+      "end_key": "Service:inventory-service",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-001-C5",
+      "end_key": "Service:user-service",
+      "properties": {}
+    },
+    {
+      "type": "CONSTRAINS",
+      "start_key": "ADR:None",
+      "end_key": "Service:None",
+      "properties": {}
+    },
+    {
+      "type": "CONSTRAINS",
+      "start_key": "ADR:None",
+      "end_key": "Service:None",
+      "properties": {}
+    },
+    {
+      "type": "CONSTRAINS",
+      "start_key": "ADR:None",
+      "end_key": "Service:None",
+      "properties": {}
+    },
+    {
+      "type": "AUTHORED",
+      "start_key": "Person:None",
+      "end_key": "ADR:None",
+      "properties": {}
+    },
+    {
+      "type": "AUTHORED",
+      "start_key": "Person:None",
+      "end_key": "ADR:None",
+      "properties": {}
+    },
+    {
+      "type": "DEFINES",
+      "start_key": "ADR:ADR-002",
+      "end_key": "Constraint:ADR-002-C1",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-002-C1",
+      "end_key": "Service:checkout-service",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-002-C1",
+      "end_key": "Service:payment-service",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-002-C1",
+      "end_key": "Service:order-service",
+      "properties": {}
+    },
+    {
+      "type": "DEFINES",
+      "start_key": "ADR:ADR-002",
+      "end_key": "Constraint:ADR-002-C2",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-002-C2",
+      "end_key": "Service:checkout-service",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-002-C2",
+      "end_key": "Service:payment-service",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-002-C2",
+      "end_key": "Service:order-service",
+      "properties": {}
+    },
+    {
+      "type": "DEFINES",
+      "start_key": "ADR:ADR-002",
+      "end_key": "Constraint:ADR-002-C3",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-002-C3",
+      "end_key": "Service:checkout-service",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-002-C3",
+      "end_key": "Service:payment-service",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-002-C3",
+      "end_key": "Service:order-service",
+      "properties": {}
+    },
+    {
+      "type": "DEFINES",
+      "start_key": "ADR:ADR-002",
+      "end_key": "Constraint:ADR-002-C4",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-002-C4",
+      "end_key": "Service:checkout-service",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-002-C4",
+      "end_key": "Service:payment-service",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-002-C4",
+      "end_key": "Service:order-service",
+      "properties": {}
+    },
+    {
+      "type": "DEFINES",
+      "start_key": "ADR:ADR-002",
+      "end_key": "Constraint:ADR-002-C5",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-002-C5",
+      "end_key": "Service:checkout-service",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-002-C5",
+      "end_key": "Service:payment-service",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-002-C5",
+      "end_key": "Service:order-service",
+      "properties": {}
+    },
+    {
+      "type": "CONSTRAINS",
+      "start_key": "ADR:None",
+      "end_key": "Service:None",
+      "properties": {}
+    },
+    {
+      "type": "CONSTRAINS",
+      "start_key": "ADR:None",
+      "end_key": "Service:None",
+      "properties": {}
+    },
+    {
+      "type": "CONSTRAINS",
+      "start_key": "ADR:None",
+      "end_key": "Service:None",
+      "properties": {}
+    },
+    {
+      "type": "CONSTRAINS",
+      "start_key": "ADR:None",
+      "end_key": "Service:None",
+      "properties": {}
+    },
+    {
+      "type": "AUTHORED",
+      "start_key": "Person:None",
+      "end_key": "ADR:None",
+      "properties": {}
+    },
+    {
+      "type": "DEFINES",
+      "start_key": "ADR:ADR-003",
+      "end_key": "Constraint:ADR-003-C1",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-003-C1",
+      "end_key": "Service:user-service",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-003-C1",
+      "end_key": "Service:order-service",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-003-C1",
+      "end_key": "Service:inventory-service",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-003-C1",
+      "end_key": "Service:analytics-service",
+      "properties": {}
+    },
+    {
+      "type": "DEFINES",
+      "start_key": "ADR:ADR-003",
+      "end_key": "Constraint:ADR-003-C2",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-003-C2",
+      "end_key": "Service:user-service",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-003-C2",
+      "end_key": "Service:order-service",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-003-C2",
+      "end_key": "Service:inventory-service",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-003-C2",
+      "end_key": "Service:analytics-service",
+      "properties": {}
+    },
+    {
+      "type": "DEFINES",
+      "start_key": "ADR:ADR-003",
+      "end_key": "Constraint:ADR-003-C3",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-003-C3",
+      "end_key": "Service:user-service",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-003-C3",
+      "end_key": "Service:order-service",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-003-C3",
+      "end_key": "Service:inventory-service",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-003-C3",
+      "end_key": "Service:analytics-service",
+      "properties": {}
+    },
+    {
+      "type": "DEFINES",
+      "start_key": "ADR:ADR-003",
+      "end_key": "Constraint:ADR-003-C4",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-003-C4",
+      "end_key": "Service:user-service",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-003-C4",
+      "end_key": "Service:order-service",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-003-C4",
+      "end_key": "Service:inventory-service",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-003-C4",
+      "end_key": "Service:analytics-service",
+      "properties": {}
+    },
+    {
+      "type": "DEFINES",
+      "start_key": "ADR:ADR-003",
+      "end_key": "Constraint:ADR-003-C5",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-003-C5",
+      "end_key": "Service:user-service",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-003-C5",
+      "end_key": "Service:order-service",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-003-C5",
+      "end_key": "Service:inventory-service",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:ADR-003-C5",
+      "end_key": "Service:analytics-service",
+      "properties": {}
+    },
+    {
+      "type": "DOCUMENTED_IN",
+      "start_key": "Incident:INC-089",
+      "end_key": "PostMortem:PM-001",
+      "properties": {}
+    },
+    {
+      "type": "AFFECTED",
+      "start_key": "Incident:INC-089",
+      "end_key": "Service:None",
+      "properties": {}
+    },
+    {
+      "type": "AFFECTED",
+      "start_key": "Incident:INC-089",
+      "end_key": "Service:None",
+      "properties": {}
+    },
+    {
+      "type": "WROTE",
+      "start_key": "Person:None",
+      "end_key": "PostMortem:None",
+      "properties": {}
+    },
+    {
+      "type": "PRODUCED",
+      "start_key": "PostMortem:PM-001",
+      "end_key": "Constraint:PM-001-C1",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:PM-001-C1",
+      "end_key": "Service:checkout-service",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:PM-001-C1",
+      "end_key": "Service:payment-service",
+      "properties": {}
+    },
+    {
+      "type": "PRODUCED",
+      "start_key": "PostMortem:PM-001",
+      "end_key": "Constraint:PM-001-C2",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:PM-001-C2",
+      "end_key": "Service:checkout-service",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:PM-001-C2",
+      "end_key": "Service:payment-service",
+      "properties": {}
+    },
+    {
+      "type": "PRODUCED",
+      "start_key": "PostMortem:PM-001",
+      "end_key": "Constraint:PM-001-C3",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:PM-001-C3",
+      "end_key": "Service:checkout-service",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:PM-001-C3",
+      "end_key": "Service:payment-service",
+      "properties": {}
+    },
+    {
+      "type": "DOCUMENTED_IN",
+      "start_key": "Incident:INC-112",
+      "end_key": "PostMortem:PM-002",
+      "properties": {}
+    },
+    {
+      "type": "AFFECTED",
+      "start_key": "Incident:INC-112",
+      "end_key": "Service:None",
+      "properties": {}
+    },
+    {
+      "type": "AFFECTED",
+      "start_key": "Incident:INC-112",
+      "end_key": "Service:None",
+      "properties": {}
+    },
+    {
+      "type": "AFFECTED",
+      "start_key": "Incident:INC-112",
+      "end_key": "Service:None",
+      "properties": {}
+    },
+    {
+      "type": "WROTE",
+      "start_key": "Person:None",
+      "end_key": "PostMortem:None",
+      "properties": {}
+    },
+    {
+      "type": "PRODUCED",
+      "start_key": "PostMortem:PM-002",
+      "end_key": "Constraint:PM-002-C1",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:PM-002-C1",
+      "end_key": "Service:checkout-service",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:PM-002-C1",
+      "end_key": "Service:payment-service",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:PM-002-C1",
+      "end_key": "Service:order-service",
+      "properties": {}
+    },
+    {
+      "type": "PRODUCED",
+      "start_key": "PostMortem:PM-002",
+      "end_key": "Constraint:PM-002-C2",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:PM-002-C2",
+      "end_key": "Service:checkout-service",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:PM-002-C2",
+      "end_key": "Service:payment-service",
+      "properties": {}
+    },
+    {
+      "type": "APPLIES_TO",
+      "start_key": "Constraint:PM-002-C2",
+      "end_key": "Service:order-service",
+      "properties": {}
+    }
+  ]
+}

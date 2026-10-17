@@ -1,0 +1,112 @@
+{
+  "people": [
+    {
+      "name": "Sarah Chen",
+      "email": "sarah.chen@example.com",
+      "githubHandle": "sarahchen",
+      "slackId": "U001SARAH",
+      "team": "platform",
+      "role": "Staff Engineer",
+      "isActive": true,
+      "expertise_signals": {
+        "checkout-service": { "commits": 47, "reviews": 89, "incidents_resolved": 3, "docs_authored": 2 },
+        "user-service": { "commits": 12, "reviews": 23, "incidents_resolved": 0, "docs_authored": 1 },
+        "inventory-service": { "commits": 31, "reviews": 55, "incidents_resolved": 1, "docs_authored": 1 },
+        "payment-service": { "commits": 8, "reviews": 42, "incidents_resolved": 2, "docs_authored": 1 }
+      }
+    },
+    {
+      "name": "David Kumar",
+      "email": "david.kumar@example.com",
+      "githubHandle": "dkumar",
+      "slackId": "U002DAVID",
+      "team": "checkout",
+      "role": "Senior Engineer",
+      "isActive": true,
+      "expertise_signals": {
+        "checkout-service": { "commits": 156, "reviews": 34, "incidents_resolved": 5, "docs_authored": 3 },
+        "payment-service": { "commits": 23, "reviews": 12, "incidents_resolved": 2, "docs_authored": 1 },
+        "order-service": { "commits": 67, "reviews": 28, "incidents_resolved": 1, "docs_authored": 0 }
+      }
+    },
+    {
+      "name": "Maria Garcia",
+      "email": "maria.garcia@example.com",
+      "githubHandle": "mgarcia",
+      "slackId": "U003MARIA",
+      "team": "data",
+      "role": "Principal Engineer",
+      "isActive": true,
+      "expertise_signals": {
+        "analytics-service": { "commits": 203, "reviews": 67, "incidents_resolved": 2, "docs_authored": 5 },
+        "user-service": { "commits": 45, "reviews": 31, "incidents_resolved": 1, "docs_authored": 2 },
+        "order-service": { "commits": 34, "reviews": 19, "incidents_resolved": 0, "docs_authored": 1 }
+      }
+    },
+    {
+      "name": "Alex Wong",
+      "email": "alex.wong@example.com",
+      "githubHandle": "awong",
+      "slackId": "U004ALEX",
+      "team": "checkout",
+      "role": "Software Engineer",
+      "isActive": true,
+      "expertise_signals": {
+        "checkout-service": { "commits": 89, "reviews": 45, "incidents_resolved": 1, "docs_authored": 0 },
+        "payment-service": { "commits": 12, "reviews": 8, "incidents_resolved": 1, "docs_authored": 0 }
+      }
+    },
+    {
+      "name": "Priya Patel",
+      "email": "priya.patel@example.com",
+      "githubHandle": "ppatel",
+      "slackId": "U005PRIYA",
+      "team": "platform",
+      "role": "DevOps Engineer",
+      "isActive": true,
+      "expertise_signals": {
+        "inventory-service": { "commits": 15, "reviews": 22, "incidents_resolved": 4, "docs_authored": 1 },
+        "checkout-service": { "commits": 5, "reviews": 18, "incidents_resolved": 3, "docs_authored": 0 }
+      }
+    },
+    {
+      "name": "James Park",
+      "email": "james.park@example.com",
+      "githubHandle": "jpark",
+      "slackId": "U006JAMES",
+      "team": "frontend",
+      "role": "Senior Frontend Engineer",
+      "isActive": false,
+      "expertise_signals": {
+        "checkout-service": { "commits": 34, "reviews": 56, "incidents_resolved": 0, "docs_authored": 1 },
+        "user-service": { "commits": 78, "reviews": 41, "incidents_resolved": 0, "docs_authored": 0 }
+      }
+    }
+  ],
+  "teams": [
+    {
+      "name": "platform",
+      "lead": "sarah.chen@example.com",
+      "domain": "Infrastructure, DevEx & Reliability",
+      "slack_channel": "#team-platform"
+    },
+    {
+      "name": "checkout",
+      "lead": "david.kumar@example.com",
+      "domain": "Checkout, Cart & Payment Integration",
+      "slack_channel": "#team-checkout"
+    },
+    {
+      "name": "data",
+      "lead": "maria.garcia@example.com",
+      "domain": "Analytics, Data Pipelines & Reporting",
+      "slack_channel": "#team-data"
+    },
+    {
+      "name": "frontend",
+      "lead": "james.park@example.com",
+      "domain": "Web & Mobile UI",
+      "slack_channel": "#team-frontend"
+    }
+  ]
+}
