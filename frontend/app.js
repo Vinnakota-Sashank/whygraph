@@ -479,6 +479,7 @@ function initCanvasVisualizer() {
       chips.forEach(c => c.classList.remove('active'));
       chip.classList.add('active');
       activeFilter = chip.getAttribute('data-filter');
+      simulationAlpha = 0.3;
     });
   });
 
@@ -550,33 +551,92 @@ async function loadGraphVisualization() {
   }
 }
 
-function initNodePositions(rawNodes, rawEdges) {
-  const width = canvas.parentElement.clientWidth;
-  const height = canvas.parentElement.clientHeight;
+let simulationAlpha = 1.0;
 
-  nodes = rawNodes.map((n, idx) => {
-    const angle = (idx / rawNodes.length) * 2 * Math.PI;
-    const r = 160 + (idx % 3) * 80;
-    return {
-      ...n,
-      x: width / 2 + r * Math.cos(angle) + (Math.random() - 0.5) * 50,
-      y: height / 2 + r * Math.sin(angle) + (Math.random() - 0.5) * 50,
-      vx: 0,
-      vy: 0,
-    };
+function initNodePositions(rawNodes, rawEdges) {
+  const width = canvas.parentElement.clientWidth || 900;
+  const height = canvas.parentElement.clientHeight || 620;
+  const centerX = width / 2;
+  const centerY = height / 2;
+
+  // Group nodes by type for clustered positioning
+  const services = rawNodes.filter(n => n.type === 'Service');
+  const constraints = rawNodes.filter(n => n.type === 'Constraint');
+  const adrs = rawNodes.filter(n => n.type === 'ADR');
+  const incidents = rawNodes.filter(n => n.type === 'Incident' || n.type === 'PostMortem');
+  const people = rawNodes.filter(n => n.type === 'Person' || n.type === 'Team');
+  const others = rawNodes.filter(n => !['Service', 'Constraint', 'ADR', 'Incident', 'PostMortem', 'Person', 'Team'].includes(n.type));
+
+  const nodeMap = {};
+
+  // 1. Center Ring: Services (Inner core)
+  services.forEach((s, idx) => {
+    const angle = (idx / (services.length || 1)) * 2 * Math.PI;
+    s.x = centerX + 150 * Math.cos(angle);
+    s.y = centerY + 150 * Math.sin(angle);
+    s.vx = 0; s.vy = 0;
+    nodeMap[s.id] = s;
   });
+
+  // 2. Middle Ring: Constraints (Arranged around services)
+  constraints.forEach((c, idx) => {
+    const angle = (idx / (constraints.length || 1)) * 2 * Math.PI + 0.2;
+    c.x = centerX + 230 * Math.cos(angle) + (idx % 2 === 0 ? 25 : -25);
+    c.y = centerY + 230 * Math.sin(angle) + (idx % 2 === 0 ? 25 : -25);
+    c.vx = 0; c.vy = 0;
+    nodeMap[c.id] = c;
+  });
+
+  // 3. Outer Ring A: ADRs & PostMortems
+  adrs.forEach((a, idx) => {
+    const angle = (idx / (adrs.length || 1)) * 2 * Math.PI;
+    a.x = centerX + 310 * Math.cos(angle);
+    a.y = centerY + 310 * Math.sin(angle);
+    a.vx = 0; a.vy = 0;
+    nodeMap[a.id] = a;
+  });
+
+  // 4. Outer Ring B: Incidents & Outages
+  incidents.forEach((inc, idx) => {
+    const angle = (idx / (incidents.length || 1)) * 2 * Math.PI + 0.5;
+    inc.x = centerX + 370 * Math.cos(angle);
+    inc.y = centerY + 370 * Math.sin(angle);
+    inc.vx = 0; inc.vy = 0;
+    nodeMap[inc.id] = inc;
+  });
+
+  // 5. Perimeter Ring: Engineers & Teams
+  people.forEach((p, idx) => {
+    const angle = (idx / (people.length || 1)) * 2 * Math.PI + 0.8;
+    p.x = centerX + 430 * Math.cos(angle);
+    p.y = centerY + 430 * Math.sin(angle);
+    p.vx = 0; p.vy = 0;
+    nodeMap[p.id] = p;
+  });
+
+  // 6. Any other nodes
+  others.forEach((o, idx) => {
+    const angle = (idx / (others.length || 1)) * 2 * Math.PI;
+    o.x = centerX + 480 * Math.cos(angle);
+    o.y = centerY + 480 * Math.sin(angle);
+    o.vx = 0; o.vy = 0;
+    nodeMap[o.id] = o;
+  });
+
+  nodes = rawNodes.map(n => nodeMap[n.id] || n);
 
   edges = rawEdges.map(e => ({
     ...e,
     sourceNode: nodes.find(n => n.id === e.source),
     targetNode: nodes.find(n => n.id === e.target)
   })).filter(e => e.sourceNode && e.targetNode);
+
+  simulationAlpha = 1.0;
 }
 
 function centerGraph() {
-  const width = canvas.parentElement.clientWidth;
-  const height = canvas.parentElement.clientHeight;
-  transform = { x: 0, y: 0, scale: 1 };
+  transform = { x: 0, y: 0, scale: 0.95 };
+  simulationAlpha = 0.25;
 }
 
 function startAnimationLoop() {
@@ -591,19 +651,42 @@ function startAnimationLoop() {
 }
 
 function updatePhysics() {
-  const width = canvas.parentElement.clientWidth;
-  const height = canvas.parentElement.clientHeight;
-  const kRepulsion = 1200;
-  const kSpring = 0.04;
-  const idealLength = 90;
+  // If simulation has cooled down and no node is being dragged, STOP computing physics
+  if (simulationAlpha < 0.004 && !draggedNode) {
+    return;
+  }
 
-  // Node repulsion
+  const width = canvas.parentElement.clientWidth || 900;
+  const height = canvas.parentElement.clientHeight || 620;
+  const centerX = width / 2;
+  const centerY = height / 2;
+
+  const kRepulsion = 800 * simulationAlpha;
+  const kSpring = 0.03 * simulationAlpha;
+  const idealLength = 95;
+
+  // 1. Node Repulsion & Hard Collision Avoidance
   for (let i = 0; i < nodes.length; i++) {
     for (let j = i + 1; j < nodes.length; j++) {
       const dx = nodes[j].x - nodes[i].x;
       const dy = nodes[j].y - nodes[i].y;
       const dist = Math.sqrt(dx * dx + dy * dy) || 1;
-      if (dist < 280) {
+
+      // Hard Collision push-apart so nodes never overlap each other
+      const minDist = nodes[i].radius + nodes[j].radius + 18;
+      if (dist < minDist) {
+        const overlap = (minDist - dist) * 0.5;
+        const pushX = (dx / dist) * overlap;
+        const pushY = (dy / dist) * overlap;
+        if (nodes[i] !== draggedNode) {
+          nodes[i].x -= pushX;
+          nodes[i].y -= pushY;
+        }
+        if (nodes[j] !== draggedNode) {
+          nodes[j].x += pushX;
+          nodes[j].y += pushY;
+        }
+      } else if (dist < 260) {
         const force = kRepulsion / (dist * dist);
         const fx = (dx / dist) * force;
         const fy = (dy / dist) * force;
@@ -619,7 +702,7 @@ function updatePhysics() {
     }
   }
 
-  // Edge springs
+  // 2. Edge Springs
   edges.forEach(e => {
     const s = e.sourceNode;
     const t = e.targetNode;
@@ -640,18 +723,21 @@ function updatePhysics() {
     }
   });
 
-  // Center pull & damping
+  // 3. Center Gravity pull & Damping
   nodes.forEach(n => {
     if (n === draggedNode) return;
-    n.vx += (width / 2 - n.x) * 0.0015;
-    n.vy += (height / 2 - n.y) * 0.0015;
+    n.vx += (centerX - n.x) * 0.001 * simulationAlpha;
+    n.vy += (centerY - n.y) * 0.001 * simulationAlpha;
 
-    n.vx *= 0.88;
-    n.vy *= 0.88;
+    n.vx *= 0.82; // Strong damping
+    n.vy *= 0.82;
 
     n.x += n.vx;
     n.y += n.vy;
   });
+
+  // 4. Exponential Cooling (settles smoothly within ~2 seconds)
+  simulationAlpha *= 0.94;
 }
 
 function drawGraph() {
@@ -768,6 +854,7 @@ function onCanvasMouseDown(e) {
   const node = getNodeAt(mouseX, mouseY);
   if (node) {
     draggedNode = node;
+    simulationAlpha = 0.25;
     openInspector(node);
   } else {
     isPanning = true;

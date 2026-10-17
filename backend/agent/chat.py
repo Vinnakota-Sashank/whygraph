@@ -14,16 +14,21 @@ from backend.config import config
 
 
 def _call_llm(prompt: str):
-    """Invoke the configured LLM (Google Gemini gemini-3.8-flash or OpenAI)."""
+    """Invoke the configured LLM with multi-model fallback."""
     if config.LLM_PROVIDER == "google" and config.GOOGLE_API_KEY:
-        try:
-            import google.generativeai as genai
-            genai.configure(api_key=config.GOOGLE_API_KEY)
-            model = genai.GenerativeModel("gemini-3.8-flash")
-            response = model.generate_content(prompt)
-            return response.text
-        except Exception as e:
-            print(f"  ⚠️  Gemini call error: {e}")
+        import google.generativeai as genai
+        genai.configure(api_key=config.GOOGLE_API_KEY)
+        # Try models in order of stability and quota availability
+        candidate_models = ["gemini-flash-latest", "gemini-3.8-flash", "gemini-flash-lite-latest"]
+        for model_name in candidate_models:
+            try:
+                model = genai.GenerativeModel(model_name)
+                response = model.generate_content(prompt)
+                if response and response.text:
+                    return response.text.strip()
+            except Exception as e:
+                # Continue to next candidate model if 429 or 404
+                continue
 
     elif config.LLM_PROVIDER == "openai" and config.OPENAI_API_KEY:
         try:
@@ -79,9 +84,30 @@ NEVER make up information — if the graph doesn't have it, say so.
 """
 
 
+def _handle_greeting() -> str:
+    """Return friendly, cited introduction to WhyGraph without consuming LLM quota."""
+    return """## 👋 Hello! I am WhyGraph
+
+I am your organization's **Engineering Decision Memory Agent**, connected directly to your live **FalkorDB** knowledge graph.
+
+I can help you with:
+- 📋 **Decision Lineage**: Trace *why* technical architectures were chosen (e.g. *"Why do we use Redis instead of Memcached?"*)
+- 👤 **Dynamic Domain Expertise**: Find out who actually understands a service right now based on commits, reviews, and incident fixes (e.g. *"Who knows about checkout-service?"*)
+- 🚨 **PR Violation Checks**: Verify proposed changes before merging (e.g. *"Would adding pymemcache to checkout-service violate any rules?"*)
+- 💥 **Outage & Incident History**: Review historical post-mortems and recurrence patterns (e.g. *"Tell me about Incident INC-089"*)
+
+What would you like to explore?"""
+
+
 def _classify_intent(question: str) -> str:
     """Simple intent classification based on keywords."""
-    q_lower = question.lower()
+    import re
+    q_lower = question.lower().strip()
+    clean_q = re.sub(r"[^\w\s]", "", q_lower).strip()
+
+    # Greeting / hello
+    if clean_q in ["hello", "hi", "hey", "greetings", "help", "who are you", "what can you do", "yo"]:
+        return "greeting"
 
     # Violation check intent
     if any(kw in q_lower for kw in ["violat", "break", "pr ", "pull request", "change", "add "]):
@@ -297,6 +323,10 @@ def chat(question: str) -> str:
     intent = _classify_intent(question)
     service_name = _extract_service_name(question)
 
+    # Route greeting directly
+    if intent == "greeting":
+        return _handle_greeting()
+
     # Route based on intent
     if intent == "expertise" and service_name:
         return _handle_expertise(service_name)
@@ -352,27 +382,29 @@ def chat(question: str) -> str:
         else:
             return "Please specify which service you're changing. Example: 'Would adding memcached to checkout-service violate any rules?'"
 
-    # General question — try LLM, fall back to graph stats
+    # General question — try LLM, fall back to intelligent architecture overview
     llm_answer = _handle_general_with_llm(question)
-    if llm_answer:
+    if llm_answer and llm_answer.strip():
         return llm_answer
     else:
-        # No LLM available — provide graph overview
         g = get_graph()
-        node_result = g.query(queries.COUNT_NODES)
-        rel_result = g.query(queries.COUNT_RELATIONSHIPS)
+        svc_result = g.query("MATCH (s:Service) RETURN s.name, s.language, s.description ORDER BY s.name")
+        c_result = g.query("MATCH (c:Constraint {isActive: true}) RETURN c.description, c.severity LIMIT 4")
 
-        lines = ["## WhyGraph Overview\n"]
-        lines.append("**Nodes:**")
-        for row in node_result.result_set:
-            lines.append(f"- {row[0]}: {row[1]}")
-        lines.append("\n**Relationships:**")
-        for row in rel_result.result_set:
-            lines.append(f"- {row[0]}: {row[1]}")
-        lines.append("\n💡 *Set GOOGLE_API_KEY in .env for natural language Q&A.*")
-        lines.append("\nTry specific questions like:")
-        lines.append("- 'Why do we use Redis in checkout-service?'")
-        lines.append("- 'Who knows about payment-service?'")
-        lines.append("- 'What constraints apply to checkout-service?'")
+        lines = [
+            "## WhyGraph Architectural Knowledge Base\n",
+            "Here is the system architecture recorded in FalkorDB:\n",
+            "### ⚙️ Monitored Microservices:"
+        ]
+        for row in svc_result.result_set:
+            lines.append(f"- **`{row[0]}`** ({row[1]}): {row[2]}")
 
+        lines.append("\n### 🛡️ Governing Constraints:")
+        for row in c_result.result_set:
+            lines.append(f"- `[{row[1]}]` {row[0]}")
+
+        lines.append("\n### 💡 Suggested Questions to Ask:")
+        lines.append("- *'Why do we use Redis instead of Memcached in checkout-service?'*")
+        lines.append("- *'Why must communication with payment-service be asynchronous?'*")
+        lines.append("- *'Who knows about checkout-service?'*")
         return "\n".join(lines)
