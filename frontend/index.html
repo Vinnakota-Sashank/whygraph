@@ -162,14 +162,15 @@
           <form id="form-violation" class="form-container">
             <div class="form-group">
               <label for="select-service">Target Service Being Modified <span class="required">*</span></label>
-              <select id="select-service" class="input-field" required>
-                <option value="checkout-service">checkout-service (Python / Checkout Team)</option>
-                <option value="payment-service">payment-service (Go / Payments Team)</option>
-                <option value="order-service">order-service (Python / Checkout Team)</option>
-                <option value="inventory-service">inventory-service (Java / Platform Team)</option>
-                <option value="user-service">user-service (TypeScript / Core Team)</option>
-                <option value="analytics-service">analytics-service (Python / Data Team)</option>
-              </select>
+              <input type="text" id="select-service" class="input-field" list="services-datalist" placeholder="Type or select service (e.g. checkout-service, medical-api)" value="checkout-service" required>
+              <datalist id="services-datalist">
+                <option value="checkout-service">
+                <option value="payment-service">
+                <option value="order-service">
+                <option value="inventory-service">
+                <option value="user-service">
+                <option value="analytics-service">
+              </datalist>
             </div>
 
             <div class="form-group">
@@ -287,7 +288,8 @@ services/checkout/requirements.txt</textarea>
           <span class="ai-sparkle">✨</span> Prompt sent to AI Agent (Cursor / Copilot / Claude):
         </label>
         <div class="prompt-input-row">
-          <input type="text" id="ai-prompt-input" class="input-field" value="Write a caching utility for checkout-service to store cart items.">
+          <input type="text" id="ai-target-service" class="input-field" list="services-datalist" style="max-width: 220px;" placeholder="Target Service" value="checkout-service">
+          <input type="text" id="ai-prompt-input" class="input-field" placeholder="Enter instructions for AI..." value="Write a caching utility for checkout-service to store cart items.">
           <button id="btn-simulate-ai" class="btn-primary">
             <span>Simulate AI Generation</span>
           </button>

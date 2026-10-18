@@ -957,7 +957,9 @@ function initGuardrailSimulator() {
 
   if (simulateBtn) {
     simulateBtn.addEventListener('click', () => {
-      runAiGuardrailSimulation('checkout-service', promptInput.value);
+      const targetServiceInput = document.getElementById('ai-target-service');
+      const service = (targetServiceInput && targetServiceInput.value.trim()) || 'checkout-service';
+      runAiGuardrailSimulation(service, promptInput.value);
     });
   }
 }
