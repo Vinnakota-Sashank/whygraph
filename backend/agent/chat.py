@@ -18,8 +18,14 @@ def _call_llm(prompt: str):
     if config.LLM_PROVIDER == "google" and config.GOOGLE_API_KEY:
         import google.generativeai as genai
         genai.configure(api_key=config.GOOGLE_API_KEY)
-        # Try models in order of stability and quota availability
-        candidate_models = ["gemini-flash-latest", "gemini-3.8-flash", "gemini-flash-lite-latest"]
+        # Try models in order of verified quota availability
+        candidate_models = [
+            "gemini-3.5-flash-lite",
+            "gemini-3.5-flash",
+            "gemini-flash-lite-latest",
+            "gemini-flash-latest",
+            "gemini-3.8-flash"
+        ]
         for model_name in candidate_models:
             try:
                 model = genai.GenerativeModel(model_name)
@@ -138,15 +144,25 @@ def _classify_intent(question: str) -> str:
 
 
 def _extract_service_name(question: str) -> str:
-    """Try to extract a service name from the question."""
-    known_services = [
-        "checkout-service", "payment-service", "user-service",
-        "inventory-service", "order-service", "analytics-service",
-    ]
+    """Dynamically extract service name from question by matching against all actual services in FalkorDB."""
     q_lower = question.lower()
+    try:
+        g = get_graph()
+        res = g.query("MATCH (s:Service) RETURN s.name")
+        all_services = [row[0] for row in res.result_set] if res.result_set else []
+    except Exception:
+        all_services = []
 
-    for svc in known_services:
-        if svc in q_lower or svc.replace("-service", "") in q_lower:
+    if not all_services:
+        all_services = [
+            "checkout-service", "payment-service", "user-service",
+            "inventory-service", "order-service", "analytics-service",
+        ]
+
+    # Check exact service name or base name
+    for svc in all_services:
+        base = svc.replace("-service", "").replace("_service", "")
+        if svc.lower() in q_lower or (len(base) >= 3 and base.lower() in q_lower):
             return svc
 
     return None
@@ -295,16 +311,16 @@ def _handle_general_with_llm(question: str):
 
     prompt = f"""{_get_graph_context()}
 
-Here is the current state of the knowledge graph:
+Here is the current state of the organization's FalkorDB knowledge graph:
 
 {graph_context}
 
 User question: {question}
 
-Answer the question using ONLY the information from the graph above. 
-Cite specific ADR IDs, PostMortem IDs, Person names, and Service names.
-If the information isn't in the graph, say "This information is not in the WhyGraph."
-Format your response in markdown.
+Instructions:
+1. If the question relates to the company's architecture, services, ADRs, post-mortems, or people, cite specific graph entities (ADR IDs, PostMortem IDs, Person names, and Service names).
+2. If the user asks a general software engineering, system design, or architectural question, explain it clearly and professionally using modern engineering best practices, relating it back to how WhyGraph governs systems.
+3. Be helpful, concise, and format your response in clear GitHub-flavored markdown.
 """
 
     return _call_llm(prompt)
