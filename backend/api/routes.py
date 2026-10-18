@@ -29,12 +29,17 @@ from backend.ingest.service_loader import load_service_data
 from backend.ingest.adr_parser import load_adrs
 from backend.ingest.postmortem_parser import load_postmortems
 from backend.ingest.unstructured_loader import ingest_unstructured_text
+from backend.ingest.repo_scanner import scan_local_repository
 from backend.config import config
 
 router = APIRouter(prefix="/api")
 
 
 # ── Request / Response Models ──────────────────────────────────────────────────
+
+class ProjectScanRequest(BaseModel):
+    project_path: str = Field(..., example="C:/Users/vinna/OneDrive/Documents/my_project")
+    clear_existing: Optional[bool] = Field(default=False)
 
 class ChatRequest(BaseModel):
     message: str = Field(..., example="Why do we use Redis instead of Memcached in checkout-service?")
@@ -365,6 +370,23 @@ async def ingest_unstructured_endpoint(payload: UnstructuredIngestRequest):
         return result
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Unstructured ingestion error: {str(e)}")
+
+
+@router.post("/project/scan")
+async def scan_project_endpoint(payload: ProjectScanRequest):
+    """
+    Universal Codebase Scanner:
+    Points WhyGraph to ANY project directory on the user's computer.
+    Discovers real services, modules, dependencies, and architecture rules,
+    and directly writes them into the FalkorDB knowledge graph.
+    """
+    if not payload.project_path.strip():
+        raise HTTPException(status_code=400, detail="Project path cannot be empty.")
+    try:
+        result = scan_local_repository(payload.project_path.strip(), clear_sample_data=bool(payload.clear_existing))
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Project scan error: {str(e)}")
 
 
 # ── AI Coding Agent Guardrail Simulator Endpoint ──────────────────────────────

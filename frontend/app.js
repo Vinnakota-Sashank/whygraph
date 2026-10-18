@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initCanvasVisualizer();
   initGuardrailSimulator();
   initLivingIngestModal();
+  initRepoScannerModal();
 
   // Initial data fetches
   fetchGraphStats();
@@ -1068,6 +1069,93 @@ function initLivingIngestModal() {
       } finally {
         submitBtn.disabled = false;
         submitBtn.textContent = 'Extract & Link into FalkorDB';
+      }
+    });
+  }
+}
+
+// ── Universal Codebase Scanner Modal ────────────────────────────────────────
+function initRepoScannerModal() {
+  const modal = document.getElementById('modal-scan');
+  const openBtn = document.getElementById('btn-open-scan-modal');
+  const closeBtn = document.getElementById('btn-close-scan-modal');
+  const cancelBtn = document.getElementById('btn-cancel-scan');
+  const form = document.getElementById('form-scan-repo');
+  const pathInput = document.getElementById('input-repo-path');
+  const clearCheckbox = document.getElementById('checkbox-clear-existing');
+  const resultContainer = document.getElementById('scan-result-container');
+
+  if (openBtn) {
+    openBtn.addEventListener('click', () => {
+      modal.classList.add('open');
+      if (!pathInput.value) {
+        pathInput.value = 'c:/Users/vinna/OneDrive/Documents/minor_project/whygraph';
+      }
+    });
+  }
+  if (closeBtn) closeBtn.addEventListener('click', () => modal.classList.remove('open'));
+  if (cancelBtn) cancelBtn.addEventListener('click', () => modal.classList.remove('open'));
+
+  if (form) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const projectPath = pathInput.value.trim();
+      if (!projectPath) return;
+
+      const submitBtn = form.querySelector('button[type="submit"]');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Scanning Codebase...';
+
+      try {
+        const res = await fetch(`${API_BASE}/project/scan`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            project_path: projectPath,
+            clear_existing: clearCheckbox ? clearCheckbox.checked : false
+          })
+        });
+
+        if (!res.ok) throw new Error('Scan failed');
+        const data = await res.json();
+
+        resultContainer.style.display = 'block';
+        resultContainer.innerHTML = `
+          <div style="font-weight: 700; color: #38bdf8; margin-bottom: 0.4rem;">🎉 Codebase Ingested into FalkorDB!</div>
+          <div><strong>Project Name:</strong> ${escapeHtml(data.project_name)}</div>
+          <div><strong>Services Created:</strong> ${escapeHtml(data.services_created.join(', '))}</div>
+          <div><strong>Languages:</strong> ${escapeHtml(data.languages.join(', '))}</div>
+          <div><strong>Code Modules Indexed:</strong> ${data.modules_indexed} &bull; <strong>Dependencies Found:</strong> ${data.dependencies_found}</div>
+          <div style="margin-top: 0.5rem; color: #4ade80;"><strong>Active Target Service:</strong> <code>${escapeHtml(data.main_service)}</code></div>
+        `;
+
+        showToast(`🎉 Ingested ${data.project_name} into FalkorDB!`);
+
+        // Update default inputs in PR Radar and AI Guardrail
+        const selectService = document.getElementById('select-service');
+        if (selectService) selectService.value = data.main_service;
+        const aiService = document.getElementById('ai-target-service');
+        if (aiService) aiService.value = data.main_service;
+
+        // Add to datalist
+        const datalist = document.getElementById('services-datalist');
+        if (datalist && data.services_created) {
+          data.services_created.forEach(svc => {
+            const opt = document.createElement('option');
+            opt.value = svc;
+            datalist.appendChild(opt);
+          });
+        }
+
+        await fetchGraphStats();
+        loadGraphVisualization();
+        loadInventoryData();
+      } catch (err) {
+        resultContainer.style.display = 'block';
+        resultContainer.innerHTML = `⚠️ Scan Error: ${err.message}`;
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Scan & Ingest into FalkorDB';
       }
     });
   }
