@@ -1159,6 +1159,140 @@ function initRepoScannerModal() {
       }
     });
   }
+
+  // Handle dedicated in-page tab: section-scanner
+  const tabForm = document.getElementById('form-scan-tab');
+  const tabPathInput = document.getElementById('input-tab-repo-path');
+  const tabClearCheckbox = document.getElementById('checkbox-tab-clear-existing');
+  const tabOutput = document.getElementById('scan-tab-output');
+  const tabStatusPill = document.getElementById('scan-tab-status-pill');
+  const browseFolderBtn = document.getElementById('btn-browse-folder');
+  const folderPicker = document.getElementById('input-folder-picker');
+
+  if (browseFolderBtn && folderPicker) {
+    browseFolderBtn.addEventListener('click', () => {
+      folderPicker.click();
+    });
+
+    folderPicker.addEventListener('change', (e) => {
+      if (e.target.files && e.target.files.length > 0) {
+        const firstFile = e.target.files[0];
+        const fullRel = firstFile.webkitRelativePath || '';
+        const rootFolder = fullRel.split('/')[0] || '';
+        if (rootFolder) {
+          tabPathInput.value = rootFolder;
+          showToast(`📁 Selected folder: ${rootFolder} (${e.target.files.length} files detected)`);
+        }
+      }
+    });
+  }
+
+  if (tabForm) {
+    tabForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const projectPath = tabPathInput.value.trim();
+      if (!projectPath) return;
+
+      const submitBtn = document.getElementById('btn-tab-submit-scan');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<span>Scanning Codebase...</span>`;
+      if (tabStatusPill) {
+        tabStatusPill.className = 'status-pill idle';
+        tabStatusPill.textContent = 'Scanning AST & Dependencies...';
+      }
+
+      tabOutput.innerHTML = `
+        <div class="empty-state">
+          <div class="pulse-indicator" style="width: 24px; height: 24px; margin-bottom: 1rem;"></div>
+          <div class="empty-text">Scanning directory tree, parsing package dependencies, and generating FalkorDB graph nodes...</div>
+        </div>
+      `;
+
+      try {
+        const res = await fetch(`${API_BASE}/project/scan`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            project_path: projectPath,
+            clear_existing: tabClearCheckbox ? tabClearCheckbox.checked : false
+          })
+        });
+
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          throw new Error(errData.detail || 'Scan failed');
+        }
+        const data = await res.json();
+
+        if (tabStatusPill) {
+          tabStatusPill.className = 'status-pill clean';
+          tabStatusPill.textContent = '✅ Ingestion Successful';
+        }
+
+        tabOutput.innerHTML = `
+          <div style="background: rgba(14, 165, 233, 0.1); border: 1px solid rgba(14, 165, 233, 0.35); border-radius: var(--radius-sm); padding: 1.25rem;">
+            <div style="font-size: 1.1rem; font-weight: 700; color: #38bdf8; margin-bottom: 0.75rem;">
+              🎉 Successfully Ingested ${escapeHtml(data.project_name)} into FalkorDB!
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; font-size: 0.85rem; margin-bottom: 1rem;">
+              <div><strong>Project Root:</strong> <code>${escapeHtml(data.scanned_path)}</code></div>
+              <div><strong>Primary Service Node:</strong> <code style="color: #4ade80;">${escapeHtml(data.main_service)}</code></div>
+              <div><strong>Languages:</strong> ${escapeHtml(data.languages.join(', ') || 'Polyglot')}</div>
+              <div><strong>Code Modules Indexed:</strong> ${data.modules_indexed} files</div>
+              <div><strong>Dependencies Discovered:</strong> ${data.dependencies_found} packages</div>
+              <div><strong>Constraints Ingested:</strong> ${data.constraints_inferred} rules</div>
+            </div>
+            <div style="font-size: 0.85rem; color: #94a3b8; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 0.75rem;">
+              💡 <strong>Next Steps:</strong> Switch to the <strong>PR Architectural Radar</strong> tab or <strong>AI Agent Guardrail</strong> tab — your real project is now selected and protected!
+            </div>
+          </div>
+        `;
+
+        showToast(`🎉 Ingested ${data.project_name} into FalkorDB!`);
+
+        // Update default inputs in PR Radar and AI Guardrail
+        const selectService = document.getElementById('select-service');
+        if (selectService) selectService.value = data.main_service;
+        const aiService = document.getElementById('ai-target-service');
+        if (aiService) aiService.value = data.main_service;
+
+        // Add to datalist
+        const datalist = document.getElementById('services-datalist');
+        if (datalist && data.services_created) {
+          data.services_created.forEach(svc => {
+            const opt = document.createElement('option');
+            opt.value = svc;
+            datalist.appendChild(opt);
+          });
+        }
+
+        await fetchGraphStats();
+        loadGraphVisualization();
+        loadInventoryData();
+      } catch (err) {
+        if (tabStatusPill) {
+          tabStatusPill.className = 'status-pill violation';
+          tabStatusPill.textContent = '❌ Scan Failed';
+        }
+        tabOutput.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">⚠️</div>
+            <div class="empty-text" style="color: #f87171;">Scan Error: ${escapeHtml(err.message)}</div>
+            <div style="font-size: 0.8rem; color: #94a3b8; margin-top: 0.5rem;">Please check that the folder path exists on your computer.</div>
+          </div>
+        `;
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <span>Scan & Load My Project into FalkorDB</span>
+        `;
+      }
+    });
+  }
 }
 
 // ── Executive Compliance & Bus Factor Audit ─────────────────────────────────

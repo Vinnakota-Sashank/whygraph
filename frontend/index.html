@@ -6,9 +6,8 @@
   <title>WhyGraph — Engineering Decision Memory & Architectural Guardrail | FalkorDB</title>
   <meta name="description" content="Enterprise engineering decision memory agent stopping teams and AI agents from repeating costly architectural mistakes. Built with FalkorDB Graph Database.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/static/style.css">
+  <link rel="stylesheet" href="/static/style.css?v=2.5">
 </head>
 <body>
   <div class="glow-bg glow-1"></div>
@@ -132,6 +131,14 @@
           <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
         </svg>
         <span>Knowledge & Audit</span>
+      </button>
+
+      <button class="tab-btn" id="tab-scanner" data-tab="section-scanner">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+        </svg>
+        <span>📁 Connect Any Project</span>
+        <span class="badge-killer">Live Scanner</span>
       </button>
     </nav>
 
@@ -540,6 +547,80 @@ class CartCache:
         </div>
       </div>
     </section>
+
+    <!-- SECTION 7: Universal Project & Codebase Scanner -->
+    <section id="section-scanner" class="tab-content">
+      <div class="content-header">
+        <div>
+          <h1 class="section-title">Universal Local Codebase Scanner</h1>
+          <p class="section-subtitle">Point WhyGraph to ANY project directory on your computer. It extracts real services, code modules, dependencies, and architecture constraints directly into FalkorDB.</p>
+        </div>
+      </div>
+
+      <div class="pr-grid">
+        <!-- Scan Form Card -->
+        <div class="card glass-card">
+          <div class="card-header">
+            <h2 class="card-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+              </svg>
+              Scan Any Project Folder
+            </h2>
+            <span class="pill-tag">Automated AST & FalkorDB Ingest</span>
+          </div>
+
+          <form id="form-scan-tab" class="form-container">
+            <div class="form-group">
+              <label for="input-tab-repo-path">Local Project Directory Path <span class="required">*</span></label>
+              <div style="display: flex; gap: 0.5rem;">
+                <input type="text" id="input-tab-repo-path" class="input-field" placeholder="e.g. C:/Users/vinna/OneDrive/Documents/minor_project/whygraph" value="c:/Users/vinna/OneDrive/Documents/minor_project/whygraph" required>
+                <input type="file" id="input-folder-picker" webkitdirectory directory multiple style="display: none;">
+                <button type="button" id="btn-browse-folder" class="btn-ghost" title="Pick folder via Windows File Explorer" style="white-space: nowrap;">
+                  📂 Browse Folder
+                </button>
+              </div>
+              <span class="field-hint">Any folder containing Python, JavaScript, TypeScript, Go, Java, or Rust files</span>
+            </div>
+
+            <div class="form-group">
+              <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.9rem; color: #cbd5e1;">
+                <input type="checkbox" id="checkbox-tab-clear-existing">
+                <span>Wipe sample e-commerce data (checkout-service, payment-service) and replace completely with this project</span>
+              </label>
+            </div>
+
+            <button type="submit" id="btn-tab-submit-scan" class="btn-primary" style="margin-top: 0.5rem;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <span>Scan & Load My Project into FalkorDB</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Scan Output Card -->
+        <div class="card glass-card result-card">
+          <div class="card-header">
+            <h2 class="card-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+              </svg>
+              Codebase Ingestion Status
+            </h2>
+            <div id="scan-tab-status-pill" class="status-pill idle">Ready to Scan</div>
+          </div>
+          <div id="scan-tab-output" class="result-body">
+            <div class="empty-state">
+              <div class="empty-icon">📁</div>
+              <div class="empty-text">Enter any local project directory or click Browse Folder, then click "Scan & Load My Project into FalkorDB".</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
   <!-- Living Knowledge Ingestion Modal -->
@@ -643,6 +724,6 @@ class CartCache:
 
   <div id="toast" class="toast"></div>
 
-  <script src="/static/app.js"></script>
+  <script src="/static/app.js?v=2.5"></script>
 </body>
 </html>
