@@ -147,15 +147,32 @@ def _file_matches_constraint(filepath: str, constraint_text: str) -> bool:
     """Check if a changed file path is relevant to a constraint."""
     filepath_lower = filepath.lower()
 
-    # Extract meaningful terms from filepath
-    path_terms = filepath_lower.replace("/", " ").replace("\\", " ").replace("_", " ").split()
+    # Extract meaningful terms from filepath, splitting on path separators, underscores, dashes, dots
+    clean_path = filepath_lower.replace("/", " ").replace("\\", " ").replace("_", " ").replace("-", " ").replace(".", " ")
+    path_terms = [t for t in clean_path.split() if len(t) > 2]
 
-    # Check if path terms appear in constraint
+    # Direct keyword containment
     for term in path_terms:
-        if len(term) > 3 and term in constraint_text:
+        if term in constraint_text:
             return True
 
+    # Semantic domain mapping for architecture components
+    domain_keywords = {
+        "crawler": ["crawler", "crawl", "playwright", "heuristics"],
+        "scanner": ["scanner", "scan", "axe", "gemini", "wcag", "gigw", "compliance"],
+        "axe": ["scanner", "scan", "axe", "gemini", "wcag", "gigw"],
+        "orchestrator": ["pipeline", "stage", "stages", "modular", "artifact"],
+        "app": ["pipeline", "stages", "modular", "orchestrator"],
+        "pipeline": ["pipeline", "stages", "modular", "artifact"],
+    }
+    for term in path_terms:
+        if term in domain_keywords:
+            for related in domain_keywords[term]:
+                if related in constraint_text:
+                    return True
+
     return False
+
 
 
 def _build_traversal_path(row, service_name: str) -> str:

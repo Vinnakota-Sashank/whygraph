@@ -307,6 +307,23 @@ def _handle_general_with_llm(question: str):
         for row in pattern_result.result_set:
             context_parts.append(f"- {row[1]} ({row[2]} occurrences, services: {row[3]})")
 
+    # Get all CodeModules / source files in the repository
+    try:
+        mod_result = g.query(
+            "MATCH (m:CodeModule)-[:PART_OF]->(s:Service) "
+            "RETURN s.name, m.name, m.filePath, m.language ORDER BY s.name, m.name"
+        )
+        if mod_result.result_set:
+            context_parts.append("\n**Repository Code Modules & Source Files:**")
+            modules_by_svc = {}
+            for row in mod_result.result_set:
+                svc_name, file_name, file_path, lang = row[0], row[1], row[2], row[3] or "Code"
+                modules_by_svc.setdefault(svc_name, []).append(f"`{file_path}` ({lang})")
+            for svc_name, files in modules_by_svc.items():
+                context_parts.append(f"- **{svc_name}** ({len(files)} files): {', '.join(files[:35])}")
+    except Exception:
+        pass
+
     graph_context = "\n".join(context_parts)
 
     prompt = f"""{_get_graph_context()}

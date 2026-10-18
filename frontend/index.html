@@ -149,8 +149,8 @@
           <h1 class="section-title">Automated PR & Architectural Violation Radar</h1>
           <p class="section-subtitle">Proactively stops developers and AI coding agents from repeating past architectural mistakes before code is merged.</p>
         </div>
-        <div class="preset-group">
-          <span class="preset-label">Demo Presets:</span>
+        <div class="preset-group" id="radar-presets-container">
+          <span class="preset-label">PR Scenarios:</span>
           <button class="preset-chip" id="preset-memcached">⚠️ Add Memcached to Checkout (ADR-001 Violation)</button>
           <button class="preset-chip" id="preset-sync-payment">⚠️ Sync Payment Call (ADR-002 Violation)</button>
           <button class="preset-chip clean" id="preset-clean">✅ Compliant Redis/Postgres PR</button>
@@ -251,7 +251,8 @@ services/checkout/requirements.txt</textarea>
         <div class="canvas-filter-bar">
           <span class="filter-label">Filter Entities:</span>
           <button class="canvas-chip active" data-filter="all">All (<span id="chip-count-all">0</span>)</button>
-          <button class="canvas-chip" data-filter="Service">Services (<span id="chip-count-svc">0</span>)</button>
+          <button class="canvas-chip" data-filter="Service">Services & Modules (<span id="chip-count-svc">0</span>)</button>
+          <button class="canvas-chip" data-filter="CodeModule">Files (<span id="chip-count-files">0</span>)</button>
           <button class="canvas-chip" data-filter="Constraint">Constraints (<span id="chip-count-c">0</span>)</button>
           <button class="canvas-chip" data-filter="ADR">ADRs (<span id="chip-count-adr">0</span>)</button>
           <button class="canvas-chip" data-filter="Incident">Incidents & PostMortems (<span id="chip-count-inc">0</span>)</button>
@@ -274,6 +275,7 @@ services/checkout/requirements.txt</textarea>
 
           <div class="canvas-legend">
             <div class="legend-item"><span class="legend-dot" style="background: #06b6d4;"></span>Service</div>
+            <div class="legend-item"><span class="legend-dot" style="background: #38bdf8;"></span>Source File</div>
             <div class="legend-item"><span class="legend-dot" style="background: #f59e0b;"></span>Constraint</div>
             <div class="legend-item"><span class="legend-dot" style="background: #8b5cf6;"></span>ADR</div>
             <div class="legend-item"><span class="legend-dot" style="background: #ef4444;"></span>Incident</div>
@@ -290,7 +292,7 @@ services/checkout/requirements.txt</textarea>
           <h1 class="section-title">AI Coding Agent Guardrail (Cursor & Copilot Simulator)</h1>
           <p class="section-subtitle">How WhyGraph's Model Context Protocol (MCP) server prevents AI code generators from hallucinating breaking architectures.</p>
         </div>
-        <div class="guardrail-presets">
+        <div class="guardrail-presets" id="guardrail-presets-container">
           <span class="preset-label">Scenario Presets:</span>
           <button class="preset-chip active" id="preset-ai-cache">Cache Implementation for Checkout</button>
           <button class="preset-chip" id="preset-ai-payment">Payment Integration</button>
@@ -420,7 +422,7 @@ class CartCache:
       </div>
 
       <div class="chat-container glass-card">
-        <div class="chat-suggestions">
+        <div class="chat-suggestions" id="chat-suggestions-container">
           <button class="suggestion-chip" data-query="Why do we use Redis instead of Memcached in checkout-service?">
             ❓ Why Redis instead of Memcached?
           </button>

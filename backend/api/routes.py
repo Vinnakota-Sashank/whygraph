@@ -294,7 +294,7 @@ async def get_graph_visualization():
             "Person": {"color": "#10b981", "size": 16, "icon": "👤", "group": "people"},
             "Team": {"color": "#6366f1", "size": 22, "icon": "👥", "group": "teams"},
             "Pattern": {"color": "#ec4899", "size": 18, "icon": "🔁", "group": "patterns"},
-            "CodeModule": {"color": "#64748b", "size": 12, "icon": "📁", "group": "code"}
+            "CodeModule": {"color": "#38bdf8", "size": 13, "icon": "📄", "group": "code"}
         }
 
         nodes = []

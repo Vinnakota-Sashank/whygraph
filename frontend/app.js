@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
   fetchGraphStats();
   loadExperts(currentService);
   loadInventoryData();
+  adaptUiToCurrentGraph();
 });
 
 // ── Tab Navigation ──────────────────────────────────────────────────────────
@@ -129,27 +130,206 @@ function initPresets() {
   const presetSyncPayment = document.getElementById('preset-sync-payment');
   const presetClean = document.getElementById('preset-clean');
 
-  presetMemcached.addEventListener('click', () => {
-    document.getElementById('select-service').value = 'checkout-service';
-    document.getElementById('input-dependencies').value = 'pymemcache';
-    document.getElementById('input-files').value = 'services/checkout/cache_client.py\nservices/checkout/requirements.txt';
-    runViolationScan();
-  });
+  if (presetMemcached) {
+    presetMemcached.addEventListener('click', () => {
+      document.getElementById('select-service').value = 'checkout-service';
+      document.getElementById('input-dependencies').value = 'pymemcache';
+      document.getElementById('input-files').value = 'services/checkout/cache_client.py\nservices/checkout/requirements.txt';
+      runViolationScan();
+    });
+  }
 
-  presetSyncPayment.addEventListener('click', () => {
-    document.getElementById('select-service').value = 'checkout-service';
-    document.getElementById('input-dependencies').value = 'httpx, requests';
-    document.getElementById('input-files').value = 'services/checkout/payment_client.py\nservices/checkout/views.py';
-    runViolationScan();
-  });
+  if (presetSyncPayment) {
+    presetSyncPayment.addEventListener('click', () => {
+      document.getElementById('select-service').value = 'checkout-service';
+      document.getElementById('input-dependencies').value = 'httpx, requests';
+      document.getElementById('input-files').value = 'services/checkout/payment_client.py\nservices/checkout/views.py';
+      runViolationScan();
+    });
+  }
 
-  presetClean.addEventListener('click', () => {
-    document.getElementById('select-service').value = 'checkout-service';
-    document.getElementById('input-dependencies').value = 'redis, psycopg2-binary';
-    document.getElementById('input-files').value = 'services/checkout/models.py\nservices/checkout/db.py';
-    runViolationScan();
-  });
+  if (presetClean) {
+    presetClean.addEventListener('click', () => {
+      document.getElementById('select-service').value = 'checkout-service';
+      document.getElementById('input-dependencies').value = 'redis, psycopg2-binary';
+      document.getElementById('input-files').value = 'services/checkout/models.py\nservices/checkout/db.py';
+      runViolationScan();
+    });
+  }
 }
+
+// ── Dynamic Adaptation to Real Scanned Project ──────────────────────────────
+async function adaptUiToCurrentGraph() {
+  try {
+    const res = await fetch(`${API_BASE}/services`);
+    if (!res.ok) return;
+    const data = await res.json();
+    const services = (data.services || []).map(s => s.service);
+
+    if (!services || services.length === 0) return;
+
+    // Check if the current graph is the synthetic e-commerce demo
+    const isSyntheticDemo = services.includes('checkout-service') && services.includes('payment-service');
+
+    // Populate services datalist for all inputs
+    const datalist = document.getElementById('services-datalist');
+    if (datalist) {
+      datalist.innerHTML = '';
+      services.forEach(svc => {
+        const opt = document.createElement('option');
+        opt.value = svc;
+        datalist.appendChild(opt);
+      });
+    }
+
+    if (!isSyntheticDemo) {
+      // Real scanned project context
+      const mainSvc = services.find(s => !s.endsWith('-module')) || services[0];
+      const srcMod = services.find(s => s.includes('src')) || mainSvc;
+
+      // 1. Update PR Radar Inputs & Presets
+      const selectService = document.getElementById('select-service');
+      if (selectService) selectService.value = srcMod;
+
+      const radarContainer = document.getElementById('radar-presets-container');
+      if (radarContainer) {
+        radarContainer.innerHTML = `
+          <span class="preset-label">Project Scenarios:</span>
+          <button class="preset-chip" id="preset-radar-1">⚠️ Modify 01-crawler.ts (Skip BFS / Heuristics)</button>
+          <button class="preset-chip" id="preset-radar-2">⚠️ Pipeline Disruption (Modify app.py)</button>
+          <button class="preset-chip clean" id="preset-radar-3">✅ Safe Utility Update (src/utils/url.ts)</button>
+        `;
+
+        const r1 = document.getElementById('preset-radar-1');
+        const r2 = document.getElementById('preset-radar-2');
+        const r3 = document.getElementById('preset-radar-3');
+
+        if (r1) {
+          r1.addEventListener('click', () => {
+            if (selectService) selectService.value = srcMod;
+            document.getElementById('input-dependencies').value = '';
+            document.getElementById('input-files').value = 'src/modules/01-crawler.ts';
+            runViolationScan();
+          });
+        }
+
+        if (r2) {
+          r2.addEventListener('click', () => {
+            if (selectService) selectService.value = mainSvc;
+            document.getElementById('input-dependencies').value = '';
+            document.getElementById('input-files').value = 'app.py\nsrc/modules/08-orchestrator.ts';
+            runViolationScan();
+          });
+        }
+
+        if (r3) {
+          r3.addEventListener('click', () => {
+            if (selectService) selectService.value = srcMod;
+            document.getElementById('input-dependencies').value = '';
+            document.getElementById('input-files').value = 'src/utils/url.ts';
+            runViolationScan();
+          });
+        }
+      }
+
+      // 2. Update AI Guardrail Target & Presets
+      const aiTarget = document.getElementById('ai-target-service');
+      if (aiTarget) aiTarget.value = srcMod;
+
+      const guardrailContainer = document.getElementById('guardrail-presets-container');
+      if (guardrailContainer) {
+        guardrailContainer.innerHTML = `
+          <span class="preset-label">Project Presets:</span>
+          <button class="preset-chip active" id="preset-ai-custom-1">Bypass Crawler Heuristics (Violates C-02)</button>
+          <button class="preset-chip" id="preset-ai-custom-2">Scanner Without Gemini AI (Violates C-03)</button>
+        `;
+
+        const p1 = document.getElementById('preset-ai-custom-1');
+        const p2 = document.getElementById('preset-ai-custom-2');
+        const promptInput = document.getElementById('ai-prompt-input');
+
+        if (p1 && promptInput) {
+          p1.addEventListener('click', () => {
+            p1.classList.add('active');
+            if (p2) p2.classList.remove('active');
+            if (aiTarget) aiTarget.value = srcMod;
+            promptInput.value = 'Write a crawling function for src-module that uses depth-first search and skips all authentication checks.';
+            runAiGuardrailSimulation(srcMod, promptInput.value);
+          });
+        }
+
+        if (p2 && promptInput) {
+          p2.addEventListener('click', () => {
+            p2.classList.add('active');
+            if (p1) p1.classList.remove('active');
+            if (aiTarget) aiTarget.value = srcMod;
+            promptInput.value = 'Update the axe-core scanner in src-module to ignore Google Gemini AI for incomplete checks.';
+            runAiGuardrailSimulation(srcMod, promptInput.value);
+          });
+        }
+      }
+
+      // Update AI Guardrail Code Preview Card to reflect real project files
+      const unguardTab = document.querySelector('.ai-card.danger-card .code-tab');
+      if (unguardTab) unguardTab.textContent = 'src/modules/01-crawler.ts';
+      const unguardBox = document.getElementById('unguarded-code-box');
+      if (unguardBox) {
+        unguardBox.innerHTML = `<code># Generated by Cursor / Copilot (UNGUARDED)
+import { chromium } from 'playwright';
+
+// ❌ Bypasses breadth-first traversal and authentication skip heuristics
+export async function crawlUrls(startUrl: string) {
+  const browser = await chromium.launch();
+  const page = await browser.newPage();
+  await page.goto(startUrl);
+  // Naive recursive depth traversal without unauthorized status detection
+}</code>`;
+      }
+      const unguardList = document.getElementById('unguarded-violations-list');
+      if (unguardList) {
+        unguardList.innerHTML = `
+          <li>Violates <strong>Constraint C-02</strong>: Crawler must use breadth-first search and apply heuristics to skip auth endpoints.</li>
+          <li>Missing Google Gemini AI reasoning fallback for ambiguous incomplete WCAG checks (<strong>C-03</strong>).</li>
+          <li>Fails to emit required intermediate pipeline artifacts to disk (<strong>C-01</strong>).</li>
+        `;
+      }
+
+      // 3. Update Chat Suggestion Chips
+      const chatSuggestions = document.getElementById('chat-suggestions-container');
+      if (chatSuggestions) {
+        chatSuggestions.innerHTML = `
+          <button class="suggestion-chip" data-query="what all files exists in src">
+            📁 What files exist in src-module?
+          </button>
+          <button class="suggestion-chip" data-query="can i delete the entire app.py file??">
+            ⚠️ Can I delete or modify app.py?
+          </button>
+          <button class="suggestion-chip" data-query="What architectural constraints govern our services?">
+            🛡️ Architectural Constraints
+          </button>
+          <button class="suggestion-chip" data-query="Give me a complete repository architecture overview">
+            📋 Repository Overview
+          </button>
+        `;
+
+        chatSuggestions.querySelectorAll('.suggestion-chip').forEach(chip => {
+          chip.addEventListener('click', () => {
+            const query = chip.getAttribute('data-query');
+            const chatInput = document.getElementById('chat-input');
+            if (chatInput && query) {
+              chatInput.value = query;
+              const chatForm = document.getElementById('form-chat');
+              if (chatForm) chatForm.dispatchEvent(new Event('submit'));
+            }
+          });
+        });
+      }
+    }
+  } catch (err) {
+    console.warn('adaptUiToCurrentGraph error:', err);
+  }
+}
+
 
 // ── Violation Form & Scan Logic ─────────────────────────────────────────────
 function initViolationForm() {
@@ -537,6 +717,8 @@ async function loadGraphVisualization() {
     // Update filter counts
     document.getElementById('chip-count-all').textContent = data.nodes.length;
     document.getElementById('chip-count-svc').textContent = data.nodes.filter(n => n.type === 'Service').length;
+    const filesCountEl = document.getElementById('chip-count-files');
+    if (filesCountEl) filesCountEl.textContent = data.nodes.filter(n => n.type === 'CodeModule').length;
     document.getElementById('chip-count-c').textContent = data.nodes.filter(n => n.type === 'Constraint').length;
     document.getElementById('chip-count-adr').textContent = data.nodes.filter(n => n.type === 'ADR').length;
     document.getElementById('chip-count-inc').textContent = data.nodes.filter(n => n.type === 'Incident' || n.type === 'PostMortem').length;
@@ -560,68 +742,125 @@ function initNodePositions(rawNodes, rawEdges) {
   const centerX = width / 2;
   const centerY = height / 2;
 
-  // Group nodes by type for clustered positioning
+  // Group nodes by type
   const services = rawNodes.filter(n => n.type === 'Service');
+  const codeModules = rawNodes.filter(n => n.type === 'CodeModule');
   const constraints = rawNodes.filter(n => n.type === 'Constraint');
   const adrs = rawNodes.filter(n => n.type === 'ADR');
   const incidents = rawNodes.filter(n => n.type === 'Incident' || n.type === 'PostMortem');
   const people = rawNodes.filter(n => n.type === 'Person' || n.type === 'Team');
-  const others = rawNodes.filter(n => !['Service', 'Constraint', 'ADR', 'Incident', 'PostMortem', 'Person', 'Team'].includes(n.type));
+  const others = rawNodes.filter(n => !['Service', 'CodeModule', 'Constraint', 'ADR', 'Incident', 'PostMortem', 'Person', 'Team'].includes(n.type));
 
   const nodeMap = {};
-
-  // 1. Center Ring: Services (Inner core)
-  services.forEach((s, idx) => {
-    const angle = (idx / (services.length || 1)) * 2 * Math.PI;
-    s.x = centerX + 150 * Math.cos(angle);
-    s.y = centerY + 150 * Math.sin(angle);
-    s.vx = 0; s.vy = 0;
-    nodeMap[s.id] = s;
+  rawNodes.forEach(n => {
+    n.vx = 0;
+    n.vy = 0;
+    nodeMap[n.id] = n;
   });
 
-  // 2. Middle Ring: Constraints (Arranged around services)
+  // Identify child services vs root services via PART_OF edges between services
+  const childServiceIds = new Set(
+    rawEdges
+      .filter(e => e.label === 'PART_OF' && services.some(s => s.id === e.source) && services.some(s => s.id === e.target))
+      .map(e => e.source)
+  );
+
+  const rootServices = services.filter(s => !childServiceIds.has(s.id));
+  const childServices = services.filter(s => childServiceIds.has(s.id));
+
+  // 1. Position Root Services at center (or inner ring)
+  if (rootServices.length === 1) {
+    const root = rootServices[0];
+    root.x = centerX;
+    root.y = centerY;
+    root.radius = 28;
+  } else {
+    rootServices.forEach((s, idx) => {
+      const angle = (idx / (rootServices.length || 1)) * 2 * Math.PI;
+      s.x = centerX + 110 * Math.cos(angle);
+      s.y = centerY + 110 * Math.sin(angle);
+      s.radius = 26;
+    });
+  }
+
+  // 2. Position Child Services (folders/sub-modules like src-module, test-module) orbiting root
+  childServices.forEach((cs, idx) => {
+    const angle = (idx / (childServices.length || 1)) * 2 * Math.PI - Math.PI / 2;
+    cs.x = centerX + 210 * Math.cos(angle);
+    cs.y = centerY + 210 * Math.sin(angle);
+    cs.radius = 22;
+  });
+
+  // 3. Map CodeModules to their parent service via PART_OF edges
+  const filesByService = {};
+  rawEdges.forEach(e => {
+    if (e.label === 'PART_OF' && codeModules.some(m => m.id === e.source)) {
+      filesByService[e.target] = filesByService[e.target] || [];
+      filesByService[e.target].push(e.source);
+    }
+  });
+
+  // Position CodeModules in a planetary halo tightly around THEIR specific parent service
+  services.forEach(s => {
+    const fileIds = filesByService[s.id] || [];
+    const totalFiles = fileIds.length;
+    fileIds.forEach((fId, fIdx) => {
+      const f = nodeMap[fId];
+      if (!f) return;
+      const angle = (fIdx / (totalFiles || 1)) * 2 * Math.PI;
+      const dist = totalFiles > 10 ? 80 + (fIdx % 2 === 0 ? 0 : 28) : 75;
+      f.x = s.x + dist * Math.cos(angle);
+      f.y = s.y + dist * Math.sin(angle);
+      f.radius = 12;
+      f.color = '#38bdf8';
+    });
+  });
+
+  // Fallback for any unattached CodeModules
+  codeModules.forEach((m, idx) => {
+    if (m.x === undefined) {
+      const angle = (idx / (codeModules.length || 1)) * 2 * Math.PI;
+      m.x = centerX + 320 * Math.cos(angle);
+      m.y = centerY + 320 * Math.sin(angle);
+      m.radius = 12;
+      m.color = '#38bdf8';
+    }
+  });
+
+  // 4. Position Constraints in arc around center
   constraints.forEach((c, idx) => {
-    const angle = (idx / (constraints.length || 1)) * 2 * Math.PI + 0.2;
-    c.x = centerX + 230 * Math.cos(angle) + (idx % 2 === 0 ? 25 : -25);
-    c.y = centerY + 230 * Math.sin(angle) + (idx % 2 === 0 ? 25 : -25);
-    c.vx = 0; c.vy = 0;
-    nodeMap[c.id] = c;
+    const angle = (idx / (constraints.length || 1)) * 2 * Math.PI + 0.35;
+    c.x = centerX + 155 * Math.cos(angle);
+    c.y = centerY + 155 * Math.sin(angle);
+    c.radius = 16;
   });
 
-  // 3. Outer Ring A: ADRs & PostMortems
+  // 5. Position ADRs
   adrs.forEach((a, idx) => {
     const angle = (idx / (adrs.length || 1)) * 2 * Math.PI;
     a.x = centerX + 310 * Math.cos(angle);
     a.y = centerY + 310 * Math.sin(angle);
-    a.vx = 0; a.vy = 0;
-    nodeMap[a.id] = a;
   });
 
-  // 4. Outer Ring B: Incidents & Outages
+  // 6. Position Incidents
   incidents.forEach((inc, idx) => {
     const angle = (idx / (incidents.length || 1)) * 2 * Math.PI + 0.5;
     inc.x = centerX + 370 * Math.cos(angle);
     inc.y = centerY + 370 * Math.sin(angle);
-    inc.vx = 0; inc.vy = 0;
-    nodeMap[inc.id] = inc;
   });
 
-  // 5. Perimeter Ring: Engineers & Teams
+  // 7. Position People
   people.forEach((p, idx) => {
     const angle = (idx / (people.length || 1)) * 2 * Math.PI + 0.8;
     p.x = centerX + 430 * Math.cos(angle);
     p.y = centerY + 430 * Math.sin(angle);
-    p.vx = 0; p.vy = 0;
-    nodeMap[p.id] = p;
   });
 
-  // 6. Any other nodes
+  // 8. Position Others
   others.forEach((o, idx) => {
     const angle = (idx / (others.length || 1)) * 2 * Math.PI;
     o.x = centerX + 480 * Math.cos(angle);
     o.y = centerY + 480 * Math.sin(angle);
-    o.vx = 0; o.vy = 0;
-    nodeMap[o.id] = o;
   });
 
   nodes = rawNodes.map(n => nodeMap[n.id] || n);
@@ -652,7 +891,6 @@ function startAnimationLoop() {
 }
 
 function updatePhysics() {
-  // If simulation has cooled down and no node is being dragged, STOP computing physics
   if (simulationAlpha < 0.004 && !draggedNode) {
     return;
   }
@@ -662,9 +900,8 @@ function updatePhysics() {
   const centerX = width / 2;
   const centerY = height / 2;
 
-  const kRepulsion = 800 * simulationAlpha;
-  const kSpring = 0.03 * simulationAlpha;
-  const idealLength = 95;
+  const kRepulsion = 750 * simulationAlpha;
+  const kSpring = 0.035 * simulationAlpha;
 
   // 1. Node Repulsion & Hard Collision Avoidance
   for (let i = 0; i < nodes.length; i++) {
@@ -673,8 +910,7 @@ function updatePhysics() {
       const dy = nodes[j].y - nodes[i].y;
       const dist = Math.sqrt(dx * dx + dy * dy) || 1;
 
-      // Hard Collision push-apart so nodes never overlap each other
-      const minDist = nodes[i].radius + nodes[j].radius + 18;
+      const minDist = nodes[i].radius + nodes[j].radius + 14;
       if (dist < minDist) {
         const overlap = (minDist - dist) * 0.5;
         const pushX = (dx / dist) * overlap;
@@ -687,8 +923,9 @@ function updatePhysics() {
           nodes[j].x += pushX;
           nodes[j].y += pushY;
         }
-      } else if (dist < 260) {
-        const force = kRepulsion / (dist * dist);
+      } else if (dist < 220) {
+        const isFilePair = nodes[i].type === 'CodeModule' && nodes[j].type === 'CodeModule';
+        const force = (isFilePair ? kRepulsion * 0.35 : kRepulsion) / (dist * dist);
         const fx = (dx / dist) * force;
         const fy = (dy / dist) * force;
         if (nodes[i] !== draggedNode) {
@@ -703,13 +940,23 @@ function updatePhysics() {
     }
   }
 
-  // 2. Edge Springs
+  // 2. Edge Springs tailored by relationship type
   edges.forEach(e => {
     const s = e.sourceNode;
     const t = e.targetNode;
     const dx = t.x - s.x;
     const dy = t.y - s.y;
     const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+
+    let idealLength = 95;
+    if (s.type === 'CodeModule' || t.type === 'CodeModule') {
+      idealLength = 70; // files orbit snugly around folder/service
+    } else if (s.type === 'Service' && t.type === 'Service') {
+      idealLength = 190; // breathing room between module and root service
+    } else if (s.type === 'Constraint' || t.type === 'Constraint') {
+      idealLength = 135;
+    }
+
     const force = (dist - idealLength) * kSpring;
     const fx = (dx / dist) * force;
     const fy = (dy / dist) * force;
@@ -727,8 +974,9 @@ function updatePhysics() {
   // 3. Center Gravity pull & Damping
   nodes.forEach(n => {
     if (n === draggedNode) return;
-    n.vx += (centerX - n.x) * 0.001 * simulationAlpha;
-    n.vy += (centerY - n.y) * 0.001 * simulationAlpha;
+    const centerFactor = n.type === 'Service' ? 0.0015 : 0.0006;
+    n.vx += (centerX - n.x) * centerFactor * simulationAlpha;
+    n.vy += (centerY - n.y) * centerFactor * simulationAlpha;
 
     n.vx *= 0.82; // Strong damping
     n.vy *= 0.82;
@@ -737,7 +985,7 @@ function updatePhysics() {
     n.y += n.vy;
   });
 
-  // 4. Exponential Cooling (settles smoothly within ~2 seconds)
+  // 4. Exponential Cooling
   simulationAlpha *= 0.94;
 }
 
@@ -780,6 +1028,15 @@ function drawGraph() {
     } else if (hoveredNode && (s === hoveredNode || t === hoveredNode)) {
       ctx.strokeStyle = 'rgba(139, 92, 246, 0.7)';
       ctx.lineWidth = 2;
+    } else if (e.label === 'PART_OF' && (s.type === 'CodeModule' || t.type === 'CodeModule')) {
+      ctx.strokeStyle = 'rgba(56, 189, 248, 0.18)'; // Subtle cyan link for files to module
+      ctx.lineWidth = 1;
+    } else if (e.label === 'PART_OF') {
+      ctx.strokeStyle = 'rgba(6, 182, 212, 0.45)'; // Module to root service
+      ctx.lineWidth = 2;
+    } else if (e.label === 'APPLIES_TO') {
+      ctx.strokeStyle = 'rgba(245, 158, 11, 0.3)'; // Constraint link
+      ctx.lineWidth = 1.5;
     } else {
       ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
       ctx.lineWidth = 1;
@@ -818,15 +1075,18 @@ function drawGraph() {
     ctx.arc(n.x, n.y, n.radius, 0, 2 * Math.PI);
     ctx.fillStyle = n.color;
     ctx.shadowColor = n.color;
-    ctx.shadowBlur = isHovered ? 15 : 6;
+    ctx.shadowBlur = isHovered ? 15 : (n.type === 'Service' ? 10 : 4);
     ctx.fill();
     ctx.shadowBlur = 0;
 
     // Node label
     ctx.fillStyle = '#ffffff';
-    ctx.font = '10px Inter, sans-serif';
+    ctx.font = n.type === 'Service' ? 'bold 11px Inter, sans-serif' : '10px Inter, sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText(n.label.length > 18 ? n.label.substring(0, 16) + '...' : n.label, n.x, n.y + n.radius + 12);
+    const displayLabel = (n.type === 'CodeModule' && n.label.includes('/'))
+      ? n.label.split('/').pop()
+      : n.label;
+    ctx.fillText(displayLabel.length > 18 ? displayLabel.substring(0, 16) + '...' : displayLabel, n.x, n.y + n.radius + 12);
   });
 
   ctx.restore();
@@ -914,6 +1174,18 @@ function openInspector(node) {
       <span class="inspector-meta-val">${escapeHtml(node.id)}</span>
     </div>
   `;
+
+  if (node.type === 'CodeModule') {
+    const parentEdge = edges.find(e => (e.source === node.id || e.sourceNode === node) && e.label === 'PART_OF');
+    if (parentEdge && parentEdge.targetNode) {
+      metaHtml += `
+        <div class="inspector-meta-row">
+          <span class="inspector-meta-label">Parent Module:</span>
+          <span class="inspector-meta-val"><strong style="color: #06b6d4;">${escapeHtml(parentEdge.targetNode.label)}</strong></span>
+        </div>
+      `;
+    }
+  }
 
   if (node.properties) {
     for (const [k, v] of Object.entries(node.properties)) {
@@ -1150,6 +1422,7 @@ function initRepoScannerModal() {
         await fetchGraphStats();
         loadGraphVisualization();
         loadInventoryData();
+        await adaptUiToCurrentGraph();
       } catch (err) {
         resultContainer.style.display = 'block';
         resultContainer.innerHTML = `⚠️ Scan Error: ${err.message}`;
@@ -1269,6 +1542,7 @@ function initRepoScannerModal() {
         await fetchGraphStats();
         loadGraphVisualization();
         loadInventoryData();
+        await adaptUiToCurrentGraph();
       } catch (err) {
         if (tabStatusPill) {
           tabStatusPill.className = 'status-pill violation';

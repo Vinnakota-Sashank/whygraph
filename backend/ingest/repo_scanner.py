@@ -212,38 +212,54 @@ Return JSON ONLY:
             }
         )
 
-    # Link top CodeModules to the first service
     main_service = services[0]
-    for mod in code_modules[:30]:
+
+    # Link child sub-services/modules to main root service
+    for sub_svc in services[1:]:
+        g.query(
+            "MATCH (p:Service {name: $parent}), (c:Service {name: $child}) "
+            "MERGE (c)-[:PART_OF]->(p)",
+            {"parent": main_service, "child": sub_svc}
+        )
+
+    # Link CodeModules to their exact folder module (e.g. src/ goes to src-module)
+    for mod in code_modules[:150]:
+        rel_path = mod["path"]
+        first_part = rel_path.split("/")[0] if "/" in rel_path else ""
+        target_svc = f"{first_part}-module" if f"{first_part}-module" in services else main_service
+
         g.query(
             "MERGE (m:CodeModule {filePath: $path}) "
-            "ON CREATE SET m.name = $name, m.language = $lang "
+            "ON CREATE SET m.name = $name, m.language = $lang, m.size = $size "
             "WITH m "
             "MATCH (s:Service {name: $svc}) "
             "MERGE (m)-[:PART_OF]->(s)",
             {
-                "path": mod["path"],
+                "path": rel_path,
                 "name": mod["name"],
                 "lang": mod["language"],
-                "svc": main_service
+                "size": mod.get("size_bytes", 0),
+                "svc": target_svc
             }
         )
 
-    # Ingest Constraints and link to Service
+    # Ingest Constraints and link to all project services
     for c in inferred_constraints:
-        g.query(
-            "MERGE (con:Constraint {id: $id}) "
-            "ON CREATE SET con.description = $desc, con.severity = $sev, con.isActive = true, con.source = 'Codebase Scanner' "
-            "WITH con "
-            "MATCH (s:Service {name: $svc}) "
-            "MERGE (con)-[:APPLIES_TO]->(s)",
-            {
-                "id": c.get("id", "C-CUSTOM"),
-                "desc": c.get("description", "Standard architectural constraint"),
-                "sev": c.get("severity", "MUST"),
-                "svc": main_service
-            }
-        )
+        for svc_target in services:
+            g.query(
+                "MERGE (con:Constraint {id: $id}) "
+                "ON CREATE SET con.description = $desc, con.severity = $sev, con.isActive = true, con.source = 'Codebase Scanner' "
+                "WITH con "
+                "MATCH (s:Service {name: $svc}) "
+                "MERGE (con)-[:APPLIES_TO]->(s)",
+                {
+                    "id": c.get("id", "C-CUSTOM"),
+                    "desc": c.get("description", "Standard architectural constraint"),
+                    "sev": c.get("severity", "MUST"),
+                    "svc": svc_target
+                }
+            )
+
 
     return {
         "status": "SUCCESS",
